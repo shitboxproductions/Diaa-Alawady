@@ -2,7 +2,7 @@
 <html lang="ar" dir="rtl">
 <head>
 <meta charset="UTF-8">
-<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<meta name="viewport" content="width=device-width, initial-scale=1.0, viewport-fit=cover">
 <title>لعبة تلبيس ضياة العوضي</title>
 <meta name="description" content="لعبة تلبيس ضياة العوضي — اسحب الملابس والبسه من راسه لقدمه">
 <link rel="icon" href="data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 100 100'%3E%3Crect width='100' height='100' rx='20' fill='%23D95D2E'/%3E%3Ctext x='50' y='72' font-size='58' text-anchor='middle' fill='%23FAF1E0' font-family='sans-serif'%3E%D8%B6%3C/text%3E%3C/svg%3E">
@@ -26,6 +26,7 @@ body{
   --gold:#E9A83A; --muted:#8A7A66;
 }
 .ic{width:19px;height:19px;flex:none}
+button,.btn,.tab,.gun,.chip,.st-chip,.st-nav,.icon-btn,.mg-screen,.stage-lock{touch-action:manipulation}
 
 /* ============ header ============ */
 header{max-width:1080px;margin:0 auto;padding:26px 26px 8px;display:flex;align-items:center;justify-content:space-between;gap:18px;flex-wrap:wrap}
@@ -123,7 +124,7 @@ footer .love svg{width:15px;height:15px;color:var(--terra)}
 #confetti{position:absolute;inset:0;width:100%;height:100%}
 /* ============ stage bar + locked-stage scrim ============ */
 .stagebar{position:absolute;top:11px;left:50%;transform:translateX(-50%);z-index:6;display:flex;align-items:center;gap:8px}
-.st-nav{width:33px;height:33px;border-radius:50%;border:2.5px solid var(--ink);background:var(--paper);color:var(--ink);font:inherit;font-weight:800;font-size:19px;line-height:1;cursor:pointer;box-shadow:3px 3px 0 rgba(51,37,27,.35);display:grid;place-items:center;padding-bottom:3px}
+.st-nav{width:33px;height:33px;border-radius:50%;border:2.5px solid var(--ink);background:var(--paper);color:var(--ink);font:inherit;font-weight:800;font-size:19px;line-height:1;cursor:pointer;box-shadow:3px 3px 0 rgba(51,37,27,.35);display:grid;place-items:center;padding-bottom:3px;flex:none}
 .st-nav:active{transform:translate(1px,1px);box-shadow:1px 1px 0 rgba(51,37,27,.35)}
 .st-chip{display:inline-flex;align-items:center;gap:7px;background:var(--paper);border:2.5px solid var(--ink);border-radius:999px;padding:5px 13px;font-weight:800;font-size:13px;cursor:pointer;box-shadow:3px 3px 0 rgba(51,37,27,.35);color:var(--ink)}
 .st-chip .ic{width:15px;height:15px;flex:none}
@@ -162,7 +163,7 @@ footer .love svg{width:15px;height:15px;color:var(--terra)}
 .shop-actions{display:flex;gap:10px;flex-wrap:wrap}
 
 /* ============ chicken minigame ============ */
-#mg{position:fixed;inset:0;z-index:65;background:rgba(38,26,16,.62);display:flex;align-items:center;justify-content:center;padding:12px}
+#mg{position:fixed;inset:0;z-index:65;background:rgba(38,26,16,.62);display:flex;align-items:center;justify-content:center;padding:12px;overscroll-behavior:contain}
 #mg[hidden]{display:none}
 .mg-box{width:min(96vw,880px);max-height:94vh;display:flex;flex-direction:column;background:var(--paper);border:3px solid var(--ink);border-radius:22px;box-shadow:10px 10px 0 rgba(51,37,27,.85);overflow:hidden}
 .mg-top{display:flex;align-items:center;gap:12px;padding:11px 16px;border-bottom:3px solid var(--ink);background:var(--cream);flex-wrap:wrap}
@@ -240,6 +241,49 @@ footer .love svg{width:15px;height:15px;color:var(--terra)}
   main{padding:10px 14px 20px}
   footer{padding-bottom:26px}
   .btn{font-size:13.5px;padding:8px 13px}
+}
+/* ============ phones ============ */
+@media (max-width:560px){
+  h1{font-size:36px}
+  .kicker{font-size:15px}
+  .badge{width:50px;height:50px}
+  header{padding:14px 14px 2px;gap:10px}
+  .head-side{gap:6px}
+  main{padding:8px 12px 16px;gap:14px}
+  .stage-wrap{height:530px}
+  .stagebar{top:9px;gap:6px}
+  .st-nav{width:40px;height:40px;font-size:21px}
+  .st-chip{font-size:12px;padding:4px 11px;gap:5px}
+  .progress{bottom:10px;gap:6px}
+  .chip{font-size:12px;padding:4px 10px}
+  .wardrobe{padding:14px 12px 8px}
+  .ward-head h2{font-size:25px}
+  .tabs{gap:6px;padding-bottom:11px}
+  .tab{padding:9px 13px;font-size:13px;gap:5px;min-height:44px}
+  .items{gap:10px;grid-template-columns:repeat(auto-fill,minmax(136px,1fr))}
+  .item{padding:11px 6px 9px}
+  .btn{padding:10px 14px;font-size:13.5px}
+  .drag-hint{font-size:12.5px;margin-bottom:10px}
+  footer{padding:4px 16px 20px;font-size:12.5px}
+  footer .hint{font-size:12px;padding:6px 12px}
+  .shop-card{padding:16px 15px}
+  .shop-tx h3{font-size:22px}
+  .mg-top{padding:9px 12px;gap:8px}
+  .mg-top h2{font-size:22px}
+  .mg-screen h3{font-size:32px}
+  .mg-rules{font-size:12px;padding:10px 13px}
+  .mg-hud{max-width:56%}
+  .mg-time{width:98px}
+  .mg-guns{padding:8px 10px}
+  .gun{padding:7px 11px;font-size:12.5px}
+  .stage-lock h4{font-size:24px}
+  .stage-lock p{font-size:12.5px}
+  .stage-lock .lk-ic{width:46px;height:46px}
+}
+/* short screens (landscape phones) */
+@media (max-height:520px){
+  .mg-cwrap{height:clamp(220px,50vh,420px)}
+  .mg-screen h3{font-size:30px}
 }
 </style>
 </head>
@@ -477,7 +521,7 @@ footer .love svg{width:15px;height:15px;color:var(--terra)}
         </button>
       </div>
     </div>
-    <p class="drag-hint">اسحب القطعة من الدولاب وارمها على <b>المنطقة المضيئة</b> من جسم ضياة — أو اضغط عليها بسرعة</p>
+    <p class="drag-hint">اضغط على القطعة تلبسها على طول — أو اسحبها وارمها على <b>المنطقة المضيئة</b> من جسم ضياة</p>
     <div class="tabs" id="tabs"></div>
     <div class="items" id="itemGrid"></div>
   </section>
@@ -1624,12 +1668,24 @@ function clearZones(){
 function startDrag(e, cat, item, card){
   if(e.button !== undefined && e.button !== 0) return;
   if(!isOwned(item)){ openShopItem(item); return; }
-  drag = {cat, id:item.id, item, card, sx:e.clientX, sy:e.clientY, started:false, tz:targetZoneOf(item)};
+  drag = {cat, id:item.id, item, card, sx:e.clientX, sy:e.clientY, started:false, tz:targetZoneOf(item),
+          touch: e.pointerType === 'touch'};
+}
+/* touch helper: if the stage is scrolled out of view (phone layout),
+   bring it back so the user can see the character + drop zones */
+function revealStage(mode){
+  try{
+    const r = stageWrap.getBoundingClientRect();
+    if(r.bottom < innerHeight * .25 || r.top > innerHeight * .75){
+      stageWrap.scrollIntoView({behavior:'smooth', block: mode || 'center'});
+    }
+  }catch(e){}
 }
 function onMove(e){
   if(!drag) return;
   if(!drag.started){
-    if(Math.hypot(e.clientX-drag.sx, e.clientY-drag.sy) < 8) return;
+    // fingers wobble more than mice — require a bigger travel before a touch counts as a drag
+    if(Math.hypot(e.clientX-drag.sx, e.clientY-drag.sy) < (drag.touch ? 14 : 8)) return;
     drag.started = true;
     document.body.classList.add('dragging');
     drag.card.classList.add('lifted');
@@ -1638,6 +1694,8 @@ function onMove(e){
     dragGhost.classList.remove('fly','land');
     zoneEl(drag.tz).classList.add('show');
     zlEl(drag.tz).classList.add('show');
+    // on phones the stage may be scrolled above the viewport — reveal it so the drop zone is reachable
+    if(drag.touch) revealStage('center');
   }
   dragGhost.style.left = e.clientX + 'px';
   dragGhost.style.top  = e.clientY + 'px';
@@ -1654,7 +1712,15 @@ function onUp(e){
   clearZones();
   d.card.classList.remove('lifted');
   document.body.classList.remove('dragging');
-  if(!d.started){ onCardClick(d.cat, d.id); return; }
+  if(!d.started){ onCardClick(d.cat, d.id); if(d.touch) revealStage('nearest'); return; }
+  // touch: released back over the item card → it was a wobbly tap, equip it
+  if(d.touch && inRect(e.clientX, e.clientY, d.card.getBoundingClientRect())){
+    dragGhost.hidden = true;
+    dragGhost.classList.remove('fly','land');
+    onCardClick(d.cat, d.id);
+    revealStage('nearest');
+    return;
+  }
   suppressClick = true;
   setTimeout(()=> suppressClick = false, 350);
   const z = zoneAt(svgPoint(e.clientX, e.clientY));
@@ -1716,6 +1782,8 @@ window.addEventListener('pointermove', onMove);
 window.addEventListener('pointerup', onUp);
 window.addEventListener('pointercancel', cancelDrag);
 document.addEventListener('dragstart', e=> e.preventDefault());
+// long-press context menu on wardrobe items / gun canvas (Android)
+document.addEventListener('contextmenu', e=>{ if(e.target.closest && e.target.closest('.item,#mgCanvas')) e.preventDefault(); });
 
 /* ================================================================
    AUDIO — blips + built-in tune (fallback when no mp3 is found)
