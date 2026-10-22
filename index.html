@@ -5,8 +5,8 @@
 <meta name="viewport" content="width=device-width, initial-scale=1.0, viewport-fit=cover">
 <meta name="color-scheme" content="light">
 <meta name="theme-color" content="#FAF1E0">
-<title>لعبة تلبيس ضياة العوضي</title>
-<meta name="description" content="لعبة تلبيس ضياة العوضي — اسحب الملابس والبسه من راسه لقدمه">
+<title>لعبة تلبيس ضياء العوضي</title>
+<meta name="description" content="لعبة تلبيس ضياء العوضي — اسحب الملابس والبسه من راسه لقدمه">
 <link rel="icon" href="data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 100 100'%3E%3Crect width='100' height='100' rx='20' fill='%23D95D2E'/%3E%3Ctext x='50' y='72' font-size='58' text-anchor='middle' fill='%23FAF1E0' font-family='sans-serif'%3E%D8%B6%3C/text%3E%3C/svg%3E">
 <link rel="preconnect" href="https://fonts.googleapis.com">
 <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
@@ -95,6 +95,7 @@ main{max-width:1080px;margin:0 auto;padding:12px 26px 26px;display:grid;grid-tem
 .item:hover{transform:translate(-2px,-2px);box-shadow:6px 6px 0 rgba(51,37,27,.2);background:#FFF9EC}
 .item:active{transform:translate(1px,1px);box-shadow:2px 2px 0 rgba(51,37,27,.2)}
 .item.lifted{opacity:.4;transform:scale(.95)}
+.item.holding{transform:scale(.96);border-color:var(--teal);background:#F4FBF8;box-shadow:2px 2px 0 rgba(51,37,27,.2)}
 .item .th-wrap{width:58px;height:58px;border-radius:13px;background:#F6EDDD;border:2px solid #E7D8BA;display:grid;place-items:center;transition:transform .15s;pointer-events:none}
 .item:hover .th-wrap{transform:scale(1.07) rotate(-2deg)}
 .item .th{width:47px;height:47px}
@@ -336,7 +337,7 @@ footer .love svg{width:15px;height:15px;color:var(--terra)}
 <header>
   <div class="titles">
     <span class="kicker">لعبة تلبيس</span>
-    <h1>ضياة العوضي</h1>
+    <h1>ضياء العوضي</h1>
     <div class="badge" aria-hidden="true">
       <svg viewBox="0 0 100 100">
         <g fill="#D95D2E" stroke="#33251B" stroke-width="2">
@@ -353,7 +354,7 @@ footer .love svg{width:15px;height:15px;color:var(--terra)}
   <div class="head-side">
     <button class="btn primary" id="playChickens">
       <svg class="ic" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M6.5 13.5c0-3.2 2.3-5.3 5.4-5.3.9-1.9 3.5-1.9 4.4 0 2.2.4 3.7 2.2 3.7 4.3 0 2.9-2.5 4.6-5.9 4.6H9c-1.5 0-2.5-1.5-2.5-3.6z"/><path d="M8.8 8.1C7.8 6.6 8.5 4.6 10.4 4.3"/><path d="M17.2 15.9c0 2.6-2.3 4.7-4.9 4.7-2.2 0-4.1-1.4-4.7-3.2"/><path d="M12.7 20.6v1.6"/><circle cx="15.9" cy="12.2" r=".45" fill="currentColor" stroke="none"/></svg>
-      <span>ألعاب ضياة</span>
+      <span>ألعاب ضياء</span>
     </button>
     <button class="btn gold" id="lbBtn">
       <svg class="ic" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M7 4h10v4.5a5 5 0 0 1-10 0z"/><path d="M7 5.5H4.5a3 3 0 0 0 3 3M17 5.5h2.5a3 3 0 0 1-3 3"/><path d="M12 13.5V16"/><path d="M9.5 20h5M10.2 16h3.6l.8 4h-5.2z"/></svg>
@@ -363,7 +364,7 @@ footer .love svg{width:15px;height:15px;color:var(--terra)}
       <svg class="ic" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M4 9.5v5h3.5l4.5 3.8V5.7L7.5 9.5H4z"/><path d="M15.5 9a4.2 4.2 0 0 1 0 6"/><path d="M17.8 6.8a7.5 7.5 0 0 1 0 10.4"/></svg>
       <span>الصوت: شغال</span>
     </button>
-    <div class="wallet" id="walletChip" title="طيباتك — تكسبها من ألعاب ضياة">
+    <div class="wallet" id="walletChip" title="طيباتك — تكسبها من ألعاب ضياء">
       <svg class="ic" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M4.5 19.5C4.5 11 10 4.5 20 4c-.3 9.5-4 15.5-11.5 15.5H4.5z"/><path d="M4.5 19.5C8 13 12.5 9.5 18.5 7.5"/></svg>
       <b id="walletN">0</b><span>طيبات</span><b id="boostBadge" class="boost-badge" hidden>×2</b>
     </div>
@@ -409,7 +410,7 @@ footer .love svg{width:15px;height:15px;color:var(--terra)}
       </g>
       <path d="M186 58 V94 M234 58 V94" stroke="#33251B" stroke-width="2.5"/>
       <rect x="148" y="92" width="124" height="36" rx="9" fill="#8B5A34" stroke="#33251B" stroke-width="3"/>
-      <text x="210" y="116" text-anchor="middle" font-size="16.5" font-weight="800" fill="#F7EFDC" font-family="'Baloo Bhaijaan 2'">منصّة ضياة</text>
+      <text x="210" y="116" text-anchor="middle" font-size="16.5" font-weight="800" fill="#F7EFDC" font-family="'Baloo Bhaijaan 2'">منصّة ضياء</text>
     </svg>
 
     <!-- stage picker -->
@@ -417,7 +418,7 @@ footer .love svg{width:15px;height:15px;color:var(--terra)}
       <button class="st-nav" id="stPrev" aria-label="المنصة اللي قبل">‹</button>
       <button class="st-chip" id="stChip">
         <svg class="ic" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M4 5c0 3.5 2.6 6 8 6s8-2.5 8-6"/><path d="M4 5c0 4 2.6 7 8 7s8-3 8-7"/><rect x="4.5" y="8" width="15" height="12" rx="3"/><path d="M9.5 14h5"/></svg>
-        <span id="stName">مسرح ضياة</span>
+        <span id="stName">مسرح ضياء</span>
         <span class="st-lock" id="stLock" hidden>
           <svg class="ic" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round"><rect x="5" y="10.5" width="14" height="9.5" rx="2.5"/><path d="M8 10.5V7a4 4 0 0 1 8 0v3.5"/></svg>
           <b id="stPrice"></b>
@@ -428,7 +429,7 @@ footer .love svg{width:15px;height:15px;color:var(--terra)}
     <div class="stage-lock" id="stageScrim" hidden>
       <svg class="lk-ic" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><rect x="4" y="10" width="16" height="11" rx="2.5"/><path d="M8 10V6.5a4 4 0 0 1 8 0V10"/><circle cx="12" cy="15.5" r="1.4" fill="currentColor" stroke="none"/></svg>
       <h4 id="scrimName"></h4>
-      <p>منصة جديدة تليق بضياة — افتحها بـ <b id="scrimPrice"></b> طيبات<br>اكسب الطيبات من ألعاب ضياة · دُق في أي مكان لفتحها</p>
+      <p>منصة جديدة تليق بضياء — افتحها بـ <b id="scrimPrice"></b> طيبات<br>اكسب الطيبات من ألعاب ضياء · دُق في أي مكان لفتحها</p>
     </div>
 
     <!-- the flying cigarette: a VERY rare guest over the stage — catch it! -->
@@ -445,7 +446,7 @@ footer .love svg{width:15px;height:15px;color:var(--terra)}
 
     <!-- the character: drawn body + the PNG head, raw, no circle -->
     <div class="char-box">
-      <svg id="charSvg" viewBox="0 0 300 560" role="img" aria-label="ضياة العوضي">
+      <svg id="charSvg" viewBox="0 0 300 560" role="img" aria-label="ضياء العوضي">
         <g id="charAll">
           <ellipse cx="150" cy="524" rx="82" ry="13" fill="#4A2E1D" opacity="0.14"/>
 
@@ -580,7 +581,7 @@ footer .love svg{width:15px;height:15px;color:var(--terra)}
         </button>
       </div>
     </div>
-    <p class="drag-hint">اضغط على القطعة تلبسها على طول — أو اسحبها وارمها على <b>المنطقة المضيئة</b> من جسم ضياة</p>
+    <p class="drag-hint">اضغط على القطعة تلبسها على طول — أو دوس عليها شوية مطوّل واسحبها على <b>المنطقة المضيئة</b> من جسم ضياء</p>
     <div class="tabs" id="tabs"></div>
     <div class="items" id="itemGrid"></div>
   </section>
@@ -589,10 +590,10 @@ footer .love svg{width:15px;height:15px;color:var(--terra)}
 <footer>
   <div class="hint">
     <svg class="ic" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M9 18.5V5l11-2.5V16"/><circle cx="6.5" cy="18.5" r="2.5"/><circle cx="17.5" cy="16" r="2.5"/></svg>
-    البس قميص وبنطال وحذاء واحتفل مع ضياة — وادخل ألعاب ضياة، اكسب طيبات وافتح الملابس والمنصات الجديدة
+    البس قميص وبنطال وحذاء واحتفل مع ضياء — وادخل ألعاب ضياء، اكسب طيبات وافتح الملابس والمنصات الجديدة
   </div>
   <div class="love">
-    <span>صُنعت بكل حب لضياة العوضي</span>
+    <span>صُنعت بكل حب لضياء العوضي</span>
     <span>· نظام الطيبات للدكتور ضياء العوضي</span>
     <svg viewBox="0 0 24 24" fill="currentColor"><path d="M12 21s-7.5-4.7-10-9C.5 8.7 2.6 5 6 5c2.2 0 3.6 1.2 6 3.8C14.4 6.2 15.8 5 18 5c3.4 0 5.5 3.7 4 7-2.5 4.3-10 9-10 9z"/></svg>
   </div>
@@ -656,10 +657,10 @@ footer .love svg{width:15px;height:15px;color:var(--terra)}
       <div class="mg-time"><i id="mgTimeBar"></i></div>
       <div class="mg-screen" id="mgStart">
         <h3>صيد الفراخ</h3>
-        <p class="mg-sub">«الفراخ قذرة ومتتاكليش» — نفّذ تعليمات الدكتور ضياة!</p>
+        <p class="mg-sub">«الفراخ قذرة ومتتاكليش» — نفّذ تعليمات الدكتور ضياء!</p>
         <div class="mg-rules">
-          <span>الفرخة البيضا <b>+5</b> · الفرخ السريع <b>+8</b> · الديك يبي <b>3</b> ضربات <b>+15</b></span>
-          <span>الفرخة الدهبية <b>+25</b> + صوت «نقطة» · فراخ البالون <b>+20</b> (عايزة صبر)</span>
+          <span>الفرخة البيضا <b>+5</b> · الفرخ الذهبي السريع <b>+8</b> · الديك يبي <b>3</b> ضربات <b>+15</b></span>
+          <span>الفرخة الذهبية <b>+25</b> · فراخ البالون <b>+20</b> (عايزة صبر) — وأي فرخة ذهبية كبيرة أو صغيرة تشغّل «نقطة»</span>
           <span>في مسرح التلبيس حاجات طايرة نادرة… من يمسكها يجمع نقاط <b>×2</b> في الألعاب</span>
           <span><b>القناصة تدمّر أي فرخة من أول ضربة</b> — حتى فراخ البالون</span>
           <span>بس <b>متضربش التمرات!</b> ضربة وحدة تنقصك <b>10</b> طيبات</span>
@@ -699,16 +700,15 @@ footer .love svg{width:15px;height:15px;color:var(--terra)}
         </div>
       </div>
       <div class="mg-screen" id="lbScreen" hidden>
-        <h3>لوحة أبطال ضياة</h3>
+        <h3>لوحة أبطال ضياء</h3>
         <p class="mg-sub" id="lbYourStats"></p>
         <div class="lb-form" id="lbNameForm">
           <input id="lbNameInput" maxlength="18" placeholder="اكتب اسمك يا بطل" autocomplete="off">
           <button class="btn primary" id="lbSaveName" type="button"><span>سجّلني</span></button>
         </div>
         <div class="lb-list" id="lbList">…</div>
-        <p class="lb-mini">النقط = طيباتك المكتسبة × (1 + نسبة إكمال اللعبة) · لوحة عالمية لكل اللاعبين</p>
+        <p class="lb-mini">النقط = طيباتك المكتسبة × (1 + نسبة إكمال اللعبة) · لوحة عالمية لكل اللاعبين · بتتحدّث لوحدها كل شوية</p>
         <div class="mg-actions">
-          <button class="btn" id="lbRefresh" type="button"><span>تحديث</span></button>
           <button class="btn" id="lbBack" type="button"><span>رجوع</span></button>
         </div>
       </div>
@@ -726,7 +726,7 @@ footer .love svg{width:15px;height:15px;color:var(--terra)}
       </div>
       <div class="shop-tx">
         <h3>إيه اسمك يا بطل؟</h3>
-        <p>عشان نحطك على لوحة الأبطال العالمية بتاعة ضياة</p>
+        <p>عشان نحطك على لوحة الأبطال العالمية بتاعة ضياء</p>
       </div>
     </div>
     <div class="name-input-wrap">
@@ -748,7 +748,7 @@ footer .love svg{width:15px;height:15px;color:var(--terra)}
 'use strict';
 
 /* ================================================================
-   لعبة تلبيس ضياة العوضي — drag & drop dress-up game
+   لعبة تلبيس ضياء العوضي — drag & drop dress-up game
 ================================================================ */
 
 // ---- tunables ------------------------------------------------
@@ -756,7 +756,7 @@ footer .love svg{width:15px;height:15px;color:var(--terra)}
 // Even without this, the game AUTO-PLAYS an mp3 placed in the same folder
 // (song.mp3 / victory.mp3 / diya.mp3 / ضياء.mp3), or one dropped on the page.
 const SONG_MP3 = "";
-const SONG_FILES = ["song.mp3", "victory.mp3", "diya.mp3", "ضياء.mp3"];
+const SONG_FILES = ["song.mp3", "victory.mp3", "diaa.mp3", "diya.mp3", "ضياء.mp3"];
 const LS_SONG = "diya-victory-song";
 
 // His head: the uploaded face PNG, rendered as-is (no circle, no clipping).
@@ -813,7 +813,7 @@ const DATA = {
     {id:'redgown',  name:'فستان سهرة أحمر', desc:'ملوك السجادة الحمرا', kind:'dress', style:'gown',   price:150, color:'#B32436', dark:'#8E1A29'},
     {id:'princess', name:'فستان أميرة',     desc:'طور الطيبات الأميري', kind:'dress', style:'princess', price:200, color:'#F2A7C3', dark:'#D96FA3'},
     {id:'galaxy', name:'فستان مجرة',       desc:'من سماوات الطيبات',  kind:'dress', style:'gown', price:180, color:'#241A45', dark:'#171128'},
-    {id:'weddingdress', name:'فستان الفرح', desc:'ضياة العريس',        kind:'dress', style:'princess', price:250, color:'#F6F0E4', dark:'#D9CDB0'}
+    {id:'weddingdress', name:'فستان الفرح', desc:'ضياء العريس',        kind:'dress', style:'princess', price:250, color:'#F6F0E4', dark:'#D9CDB0'}
   ],
   bottom: [
     {id:'shorts',         name:'شورت رياضي',      desc:'وضع البيت',            style:'shorts', color:'#909399', dark:'#7C7F85'},
@@ -845,7 +845,7 @@ const DATA = {
     {id:'bootsbrown',name:'بوت بني',     desc:'رحلات البر',        kind:'boot',    price:75, color:'#6E4224', shine:'#8B5A34'}
   ],
   acc: [
-    {id:'watches',    name:'ساعتين ضياة', desc:'واحدة داكنة وواحدة فضية', zone:'top'},
+    {id:'watches',    name:'ساعتين ضياء', desc:'واحدة داكنة وواحدة فضية', zone:'top'},
     {id:'sunglasses', name:'نظارة شمسية', desc:'ستايل نجم',                zone:'head'},
     {id:'cap',        name:'كاب أخضر',    desc:'لليوم الرياضي',            zone:'head'},
     {id:'shemagh',    name:'شماغ وعقال',  desc:'الإطلالة الخليجية',        zone:'head'},
@@ -855,7 +855,7 @@ const DATA = {
     {id:'halo',       name:'هالة نور',    desc:'قديس الطيبات',             zone:'head', price:80},
     {id:'bowtie',     name:'بابيون أنيق', desc:'يكمّل التكسيدو',            zone:'top',  price:40},
     {id:'crown',      name:'تاج الملوك', desc:'ملك الطيبات',               zone:'head', price:100},
-    {id:'cigarette',  name:'سيجارة ضياة', desc:'سرّ من أسرار اللعبة…',      zone:'head', secret:true}
+    {id:'cigarette',  name:'سيجارة ضياء', desc:'سرّ من أسرار اللعبة…',      zone:'head', secret:true}
   ]
 };
 Object.keys(DATA).forEach(c => DATA[c].forEach(it => it.cat = c));
@@ -887,7 +887,7 @@ let lbName = (sg.lb && sg.lb.name) || "";
 let lbBest = +((sg.lb && sg.lb.best) || 0);
 
 const GUNS = [
-  {id:"pump",    name:"بمب ضياة",  desc:"السلاح الرسمي — طلعة طلعة", price:0,    rate:620,  radius:36,  auto:false},
+  {id:"pump",    name:"بمب ضياء",  desc:"السلاح الرسمي — طلعة طلعة", price:0,    rate:620,  radius:36,  auto:false},
   {id:"dual",    name:"مسدسين",    desc:"سرعة نار مضاعفة",            price:150,  rate:270,  radius:32,  auto:false},
   {id:"shotgun", name:"الشوزن",    desc:"طلقة واحدة تصيد كل اللي حوالين", price:400,  rate:950,  radius:100, auto:false, splash:true},
   {id:"rifle",   name:"الرشاش",    desc:"استمر ضاغط وخليها تمطر",     price:700,  rate:125,  radius:26,  auto:true,  spread:22},
@@ -1685,6 +1685,7 @@ function probeNo2taFile(i){
   probeNo2taFile(0);
 })();
 function playNo2ta(){
+  window.__no2taCalls = (window.__no2taCalls || 0) + 1;   // tiny QA hook — counts calls, no effect on play
   if(!soundOn || !no2taSrc) return;
   try{
     const au = new Audio(no2taSrc);
@@ -1705,7 +1706,7 @@ window.addEventListener('drop', e=>{
       if(wantNo2ta){
         no2taSrc = r.result;
         try{ if(r.result.length < 2500000) localStorage.setItem(LS_NO2TA, r.result); }catch(err){}
-        toast('استوعبت صوت النقطة! يشتغل أول ما تصطاد الفرخة الدهبية');
+        toast('استوعبت صوت النقطة! يشتغل أول ما تصطاد الفرخة الذهبية');
       } else {
         setSong(r.result, f.name);
         try{ if(r.result.length < 3800000) localStorage.setItem(LS_SONG, r.result); }catch(err){}
@@ -1726,7 +1727,7 @@ window.addEventListener('drop', e=>{
         } else {
           setHead(img, r.result);
           try{ localStorage.setItem(LS_FACE, r.result); }catch(err){}
-          toast('هذي الصورة صارت وجه ضياة!');
+          toast('هذي الصورة صارت وجه ضياء!');
         }
       };
       img.src = r.result;
@@ -1909,7 +1910,7 @@ function openShopItem(item){
     price: item.price,
     onBuy(){
       unlocked.add(item.id);
-      toast('تم فتح: ' + item.name + ' — ولبستها على ضياة!');
+      toast('تم فتح: ' + item.name + ' — ولبستها على ضياء!');
       if(item.cat === 'acc') applyItem('acc', item.id);
       else if(item.cat === 'dress') applyItem('dress', item.id);
       else applyItem(item.cat, item.id);
@@ -2009,9 +2010,41 @@ function clearZones(){
 function startDrag(e, cat, item, card){
   if(e.button !== undefined && e.button !== 0) return;
   if(!isOwned(item)){ secretHint(item); return; }
-  drag = {cat, id:item.id, item, card, sx:e.clientX, sy:e.clientY, started:false, tz:targetZoneOf(item, activeCat),
-          touch: e.pointerType === 'touch'};
+  if(drag && drag.holdTimer) clearTimeout(drag.holdTimer);   // a second finger landed on another card
+  const touch = e.pointerType !== 'mouse';   // touch + pen use the long-press flow
+  drag = {cat, id:item.id, item, card, sx:e.clientX, sy:e.clientY, lx:e.clientX, ly:e.clientY, started:false,
+          tz:targetZoneOf(item, activeCat), touch, moved:0, holdPending:false, holdActive:false, holdTimer:0};
+  if(touch){
+    // press & hold (300ms) lifts the item into drag mode; a quick tap equips;
+    // moving the finger straight away scrolls the wardrobe grid (the browser takes it)
+    drag.holdPending = true;
+    drag.holdTimer = setTimeout(activateHoldDrag, 300);
+    card.classList.add('holding');
+  }
 }
+/* long-press lifts a touch-dragged item. Once lifted we block page scrolling for
+   the rest of this touch (non-passive touchmove preventDefault), so the finger
+   can carry the item up to the character on phones. */
+function activateHoldDrag(){
+  if(!drag || !drag.holdPending) return;
+  drag.holdPending = false; drag.holdActive = true; drag.started = true;
+  try{ navigator.vibrate && navigator.vibrate(14); }catch(e){}
+  document.addEventListener('touchmove', blockTouchScroll, {passive:false});
+  document.body.classList.add('dragging');
+  drag.card.classList.remove('holding');
+  drag.card.classList.add('lifted');
+  dragGhost.innerHTML = thumb(drag.item);
+  dragGhost.hidden = false;
+  dragGhost.classList.remove('fly','land');
+  dragGhost.style.left = drag.lx + 'px';
+  dragGhost.style.top  = drag.ly + 'px';
+  zoneEl(drag.tz).classList.add('show');
+  zlEl(drag.tz).classList.add('show');
+  // holding an item brings the character back on screen on phones
+  revealStage('center');
+}
+function blockTouchScroll(e){ if(drag && drag.holdActive) e.preventDefault(); }
+function unblockTouchScroll(){ document.removeEventListener('touchmove', blockTouchScroll); }
 /* touch helper: if the stage is scrolled out of view (phone layout),
    bring it back so the user can see the character + drop zones */
 function revealStage(mode){
@@ -2024,9 +2057,21 @@ function revealStage(mode){
 }
 function onMove(e){
   if(!drag) return;
+  drag.lx = e.clientX; drag.ly = e.clientY;
+  drag.moved = Math.max(drag.moved, Math.hypot(e.clientX-drag.sx, e.clientY-drag.sy));
+  if(drag.holdPending){
+    // finger moved before the long-press finished → user is scrolling the wardrobe,
+    // not dragging: hand the gesture to the browser and forget the drag
+    if(drag.moved > 12){
+      clearTimeout(drag.holdTimer);
+      drag.card.classList.remove('holding');
+      drag = null;
+    }
+    return;
+  }
   if(!drag.started){
     // fingers wobble more than mice — require a bigger travel before a touch counts as a drag
-    if(Math.hypot(e.clientX-drag.sx, e.clientY-drag.sy) < (drag.touch ? 14 : 8)) return;
+    if(drag.moved < (drag.touch ? 14 : 8)) return;
     drag.started = true;
     document.body.classList.add('dragging');
     drag.card.classList.add('lifted');
@@ -2050,9 +2095,29 @@ function onMove(e){
 function onUp(e){
   if(!drag) return;
   const d = drag; drag = null;
+  if(d.holdTimer) clearTimeout(d.holdTimer);
+  unblockTouchScroll();
   clearZones();
-  d.card.classList.remove('lifted');
+  d.card.classList.remove('holding','lifted');
   document.body.classList.remove('dragging');
+  if(d.holdActive){
+    // the long-press lifted the item — the release drops it wherever the finger is
+    suppressClick = true;
+    setTimeout(()=> suppressClick = false, 350);
+    const z = zoneAt(svgPoint(e.clientX, e.clientY));
+    const onStage = inRect(e.clientX, e.clientY, stageWrap.getBoundingClientRect());
+    if(z && (z === d.tz || dressZoneOK(d.item, z))) return lockDrop(d, z);
+    if(!z && onStage) return lockDrop(d, d.tz);
+    if(z && z !== d.tz) return rejectDrop(d);
+    if(inRect(e.clientX, e.clientY, d.card.getBoundingClientRect())){
+      dragGhost.hidden = true;              // hide the lifted item — it lands back as a tap
+      dragGhost.classList.remove('fly','land');
+      lastPtrEquip = performance.now();
+      onCardClick(d.cat, d.id);   // lifted but released in place → treat as a tap
+      return;
+    }
+    return flyBack(d);
+  }
   if(!d.started){
     lastPtrEquip = performance.now();
     onCardClick(d.cat, d.id);
@@ -2080,17 +2145,16 @@ function onUp(e){
 function cancelDrag(e){
   if(!drag) return;
   const d = drag; drag = null;
+  if(d.holdTimer) clearTimeout(d.holdTimer);
+  unblockTouchScroll();
   clearZones();
-  if(d.started){ flyBack(d); }
-  else if(e && e.clientX !== undefined && Math.hypot(e.clientX - d.sx, e.clientY - d.sy) < 12){
-    // the browser stole this touch (scrolling usually) — still treat quick,
-    // steady releases as taps so item buttons never feel dead on mobile
-    lastPtrEquip = performance.now();
-    onCardClick(d.cat, d.id);
-  }
-  d.card && d.card.classList.remove('lifted');
+  d.card.classList.remove('holding','lifted');
   document.body.classList.remove('dragging');
+  // the browser stole this touch (scrolling the grid usually) — put the item back.
+  // taps always reach onUp, so no equip-rescue here: flicks must never dress ضياء.
+  if(d.holdActive || d.started){ flyBack(d); return; }
   dragGhost.hidden = true;
+  dragGhost.classList.remove('fly','land');
 }
 function flyGhostTo(x, y){
   dragGhost.classList.add('fly');
@@ -2401,7 +2465,7 @@ function startParty(){
   burst(160);
   spawnUntil = performance.now() + 5200;
   startLoop();
-  toast('الإطلالة كاملة! انبسط ضياة…');
+  toast('الإطلالة كاملة! انبسط ضياء…');
 }
 
 // --- end-of-music detection, belt and braces ---
@@ -2573,7 +2637,7 @@ const STAGE_THUMBS = {
 function stageThumbSvg(id){ return '<svg viewBox="0 0 48 48" aria-hidden="true">' + STAGE_THUMBS[id] + '</svg>'; }
 
 const STAGES = [
-  {id:"theater", name:"مسرح ضياة",  price:0,   svg:THEATER_SVG},
+  {id:"theater", name:"مسرح ضياء",  price:0,   svg:THEATER_SVG},
   {id:"beach",   name:"الشاطئ",      price:120, svg:BEACH_SVG},
   {id:"neon",    name:"ليل النيون",  price:250, svg:NEON_SVG},
   {id:"palace",  name:"القصر الملكي", price:400, svg:PALACE_SVG},
@@ -2618,7 +2682,7 @@ function tryUnlockStage(){
   openShop({
     thumb: stageThumbSvg(st.id),
     name: st.name,
-    desc: 'منصة عرض جديدة تليق بضياة — تشتريها مرة وحدة وتبقى معك دايماً',
+    desc: 'منصة عرض جديدة تليق بضياء — تشتريها مرة وحدة وتبقى معك دايماً',
     price: st.price,
     onBuy(){
       stagesOwned.add(st.id);
@@ -2692,7 +2756,7 @@ function hudLabels(){
 }
 function setMgMode(m, silent){
   if(mgMode === m){ if(m === 'lb') openLb(); return; }   // tapping الأبطال again refreshes the board
-  if(m !== 'lb') lastGameMode = m;
+  if(m !== 'lb'){ lastGameMode = m; stopLbPolling(); }
   mgMode = m;
   stopRound();
   document.getElementById('gtabChick').classList.toggle('on', m === 'chicken');
@@ -2725,6 +2789,7 @@ function mgShow(){
 function mgHide(){
   mgOpen = false;
   mg.hidden = true;
+  stopLbPolling();
   stopRound();
 }
 document.getElementById('playChickens').addEventListener('click', ()=>{ blip(700); mgShow(); });
@@ -2962,10 +3027,12 @@ function hitBird(b){
   earned += Math.max(0, gain);
   MGS.coinsRound += gain;
   if(b.type !== 'pill'){ MGS.chickens++; totalChickens++; }
+  window.__lastKill = b.type;   // tiny QA hook — reports what was just shot
   refreshWallet();
   popBird(b, b.type === 'gold' ? '#F5C542' : (b.type === 'balloon' ? '#FF6B5A' : (b.type === 'chick' ? '#F7D154' : '#FFF8EC')), b.type === 'balloon' ? 16 : 10);
   addText(b.x, b.y, '+' + gain, b.type === 'gold' ? '#FFD44D' : (b.type === 'balloon' ? '#FF9BB0' : '#B8F0D9'));
   if(b.type === 'gold'){ sndGold(); playNo2ta(); }
+  else if(b.type === 'chick'){ sndPop(); playNo2ta(); }   // the small golden chick sings no2ta too
   else if(b.type === 'balloon'){ sndBalloonPop(); }
   else sndPop();
 }
@@ -3648,12 +3715,32 @@ async function openLb(){
   lbList.textContent = '…';
   const rows = await fetchLb();
   if(rows === null){
-    lbList.innerHTML = '<div class="lb-row"><span>اللوحة مش متاحة الآن — اتأكد من النت وجرجع</span></div>';
+    lbList.innerHTML = '<div class="lb-row"><span>اللوحة مش متاحة الآن — بتتحاول تلقائيًا كل شوية</span></div>';
+    startLbPolling();
     return;
   }
   renderLb(rows);
+  startLbPolling();
 }
-document.getElementById('lbRefresh').addEventListener('click', ()=>{ blip(600); openLb(); });
+/* auto-refresh: the board silently updates itself every 8s while it's open,
+   and stops as soon as the player leaves it — no refresh button needed */
+let lbPollTimer = null, lbPollBusy = false;
+function startLbPolling(){
+  stopLbPolling();
+  lbPollTimer = setInterval(async ()=>{
+    if(document.hidden || lbPollBusy || lbScreen.hidden || !mgOpen) return;
+    lbPollBusy = true;
+    try{
+      const rows = await fetchLb();
+      if(rows && !lbScreen.hidden && mgOpen){
+        renderLb(rows);
+        lbYourStats.textContent = 'نقطك: ' + myScore().toLocaleString('ar-EG') +
+          ' = ' + earned.toLocaleString('ar-EG') + ' طيبات مكتسبة × إكمال ' + Math.round(completionPct()*100) + '%';
+      }
+    }catch(e){}finally{ lbPollBusy = false; }
+  }, 8000);
+}
+function stopLbPolling(){ if(lbPollTimer){ clearInterval(lbPollTimer); lbPollTimer = null; } }
 document.getElementById('lbBack').addEventListener('click', ()=>{ blip(560); setMgMode(lastGameMode, true); });
 document.getElementById('lbSaveName').addEventListener('click', ()=>{
   const nm = lbSanitize(lbNameInput.value);
@@ -3702,10 +3789,10 @@ function catchLobbyCig(){
   if(!unlocked.has('cigarette')){
     unlocked.add('cigarette');
     applyItem('acc', 'cigarette');
-    toast('سيجارة ضياة! نقاط ×2 لدقيقتين والسيجارة في بقّه — بتطير بعد ما يخلص الوقت!');
+    toast('سيجارة ضياء! نقاط ×2 لدقيقتين والسيجارة في بقّه — بتطير بعد ما يخلص الوقت!');
     renderGrid();
   }else{
-    toast('سيجارة ضياة! كل النقط ×2 لدقيقتين — وبعدين بتطير تاني');
+    toast('سيجارة ضياء! كل النقط ×2 لدقيقتين — وبعدين بتطير تاني');
   }
   saveGame();
 }
