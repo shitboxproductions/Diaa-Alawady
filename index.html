@@ -3,6 +3,8 @@
 <head>
 <meta charset="UTF-8">
 <meta name="viewport" content="width=device-width, initial-scale=1.0, viewport-fit=cover">
+<meta name="color-scheme" content="light">
+<meta name="theme-color" content="#FAF1E0">
 <title>لعبة تلبيس ضياة العوضي</title>
 <meta name="description" content="لعبة تلبيس ضياة العوضي — اسحب الملابس والبسه من راسه لقدمه">
 <link rel="icon" href="data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 100 100'%3E%3Crect width='100' height='100' rx='20' fill='%23D95D2E'/%3E%3Ctext x='50' y='72' font-size='58' text-anchor='middle' fill='%23FAF1E0' font-family='sans-serif'%3E%D8%B6%3C/text%3E%3C/svg%3E">
@@ -12,7 +14,9 @@
 <style>
 /* ============ base ============ */
 *{box-sizing:border-box;-webkit-tap-highlight-color:transparent}
+[hidden]{display:none!important}   /* any class display:flex must never defeat the hidden attribute */
 html,body{margin:0}
+html{color-scheme:light;forced-color-adjust:none}
 body{
   font-family:'Baloo Bhaijaan 2','Segoe UI',Tahoma,sans-serif;
   color:#33251B;
@@ -39,12 +43,17 @@ h1{margin:0;font-family:Lalezar,'Baloo Bhaijaan 2',cursive;font-size:60px;line-h
 .wallet{display:inline-flex;align-items:center;gap:7px;background:var(--paper);color:var(--ink);border:2.5px solid var(--ink);border-radius:999px;padding:6px 13px;font-weight:800;font-size:14px;box-shadow:3px 3px 0 rgba(51,37,27,.35)}
 .wallet .ic{color:var(--teal);width:16px;height:16px}
 .wallet b{font-size:16px;color:var(--teal-d)}
+.boost-badge{display:inline-flex;align-items:center;background:var(--terra);color:#FFF8EC;border-radius:999px;padding:1px 9px;font-size:11.5px;font-weight:800;margin-inline-start:3px;letter-spacing:.2px}
 
 /* ============ buttons ============ */
 .btn{font:inherit;font-weight:800;font-size:14.5px;display:inline-flex;align-items:center;gap:8px;background:var(--paper);color:var(--ink);border:2.5px solid var(--ink);border-radius:14px;padding:9px 16px;cursor:pointer;box-shadow:3px 3px 0 rgba(51,37,27,.85);transition:transform .12s,box-shadow .12s}
 .btn:hover{transform:translate(-1px,-1px);box-shadow:4px 4px 0 rgba(51,37,27,.85)}
 .btn:active{transform:translate(2px,2px);box-shadow:1px 1px 0 rgba(51,37,27,.85)}
 .btn.primary{background:var(--terra);color:#FFF8EC}
+.btn.gold{background:linear-gradient(180deg,#FFDF7E 0%,#E9A83A 100%);color:#3A2A12;border-color:#B37F22;box-shadow:3px 3px 0 rgba(179,127,34,.85)}
+.btn.gold:hover{box-shadow:4px 4px 0 rgba(179,127,34,.85)}
+.btn.gold:active{box-shadow:1px 1px 0 rgba(179,127,34,.85)}
+.btn.gold .ic{color:#8E6414}
 
 /* ============ layout ============ */
 main{max-width:1080px;margin:0 auto;padding:12px 26px 26px;display:grid;grid-template-columns:minmax(330px,430px) 1fr;gap:24px;align-items:start}
@@ -53,8 +62,10 @@ main{max-width:1080px;margin:0 auto;padding:12px 26px 26px;display:grid;grid-tem
 /* ============ stage ============ */
 .stage-wrap{position:relative;overflow:hidden;height:620px;max-width:430px;width:100%;margin-inline:auto;background:#F3E3C6}
 .backdrop{position:absolute;inset:0;width:100%;height:100%}
-.char-box{position:absolute;top:5.5%;left:50%;transform:translateX(-50%);width:62%;z-index:2}
-#charSvg{display:block;width:100%}
+.char-box{position:absolute;top:8.5%;left:50%;transform:translateX(-50%);width:62%;z-index:2}
+#charSvg{display:block;width:100%;overflow:visible}
+/* while the giant winface meme is up, the tiny drawn head accessories step aside */
+#charSvg.winface #head .acc{display:none!important}
 .progress{position:absolute;bottom:14px;left:0;right:0;display:flex;justify-content:center;gap:10px;z-index:3;flex-wrap:wrap}
 .chip{display:inline-flex;align-items:center;gap:7px;background:var(--paper);border:2.5px solid var(--ink);border-radius:999px;padding:5px 12px 5px 9px;font-weight:800;font-size:14px;box-shadow:3px 3px 0 rgba(51,37,27,.35)}
 .chip .chk{display:none;width:21px;height:21px;border-radius:50%;background:var(--teal);color:#fff;place-items:center;border:2px solid var(--ink)}
@@ -77,10 +88,10 @@ main{max-width:1080px;margin:0 auto;padding:12px 26px 26px;display:grid;grid-tem
 .tab .ic{width:17px;height:17px}
 .tab:hover{transform:translate(-1px,-1px);box-shadow:4px 4px 0 rgba(51,37,27,.3)}
 .tab.on{background:var(--teal);color:#FFFDF6;border-color:var(--teal-d);box-shadow:3px 3px 0 rgba(15,95,85,.5)}
-.items{display:grid;grid-template-columns:repeat(auto-fill,minmax(152px,1fr));gap:13px;max-height:456px;overflow:auto;padding:6px 4px 8px}
+.items{display:grid;grid-template-columns:repeat(auto-fill,minmax(152px,1fr));gap:13px;max-height:456px;overflow:auto;padding:6px 4px 8px;overscroll-behavior:contain}
 .items::-webkit-scrollbar{width:10px}
 .items::-webkit-scrollbar-thumb{background:#D8CDB6;border-radius:99px;border:2px solid var(--paper)}
-.item{position:relative;display:flex;flex-direction:column;align-items:center;gap:3px;background:var(--paper);border:2.5px solid var(--ink);border-radius:16px;padding:13px 8px 10px;cursor:grab;touch-action:none;-webkit-touch-callout:none;user-select:none;font:inherit;color:inherit;box-shadow:4px 4px 0 rgba(51,37,27,.16);transition:transform .13s,box-shadow .13s,background .15s,border-color .15s,opacity .15s}
+.item{position:relative;display:flex;flex-direction:column;align-items:center;gap:3px;background:var(--paper);border:2.5px solid var(--ink);border-radius:16px;padding:13px 8px 10px;cursor:grab;touch-action:manipulation;-webkit-touch-callout:none;user-select:none;font:inherit;color:inherit;box-shadow:4px 4px 0 rgba(51,37,27,.16);transition:transform .13s,box-shadow .13s,background .15s,border-color .15s,opacity .15s}
 .item:hover{transform:translate(-2px,-2px);box-shadow:6px 6px 0 rgba(51,37,27,.2);background:#FFF9EC}
 .item:active{transform:translate(1px,1px);box-shadow:2px 2px 0 rgba(51,37,27,.2)}
 .item.lifted{opacity:.4;transform:scale(.95)}
@@ -123,7 +134,7 @@ footer .love svg{width:15px;height:15px;color:var(--terra)}
 #party{position:fixed;inset:0;z-index:50;pointer-events:none;overflow:hidden}
 #confetti{position:absolute;inset:0;width:100%;height:100%}
 /* ============ stage bar + locked-stage scrim ============ */
-.stagebar{position:absolute;top:11px;left:50%;transform:translateX(-50%);z-index:6;display:flex;align-items:center;gap:8px}
+.stagebar{position:absolute;top:2px;left:50%;transform:translateX(-50%);z-index:6;display:flex;align-items:center;gap:8px}
 .st-nav{width:33px;height:33px;border-radius:50%;border:2.5px solid var(--ink);background:var(--paper);color:var(--ink);font:inherit;font-weight:800;font-size:19px;line-height:1;cursor:pointer;box-shadow:3px 3px 0 rgba(51,37,27,.35);display:grid;place-items:center;padding-bottom:3px;flex:none}
 .st-nav:active{transform:translate(1px,1px);box-shadow:1px 1px 0 rgba(51,37,27,.35)}
 .st-chip{display:inline-flex;align-items:center;gap:7px;background:var(--paper);border:2.5px solid var(--ink);border-radius:999px;padding:5px 13px;font-weight:800;font-size:13px;cursor:pointer;box-shadow:3px 3px 0 rgba(51,37,27,.35);color:var(--ink)}
@@ -137,6 +148,15 @@ footer .love svg{width:15px;height:15px;color:var(--terra)}
 .stage-lock h4{margin:0;font-family:Lalezar,cursive;font-size:32px;color:#FFFDF6;line-height:1;text-shadow:3px 3px 0 rgba(0,0,0,.4)}
 .stage-lock p{margin:0;color:#F1E4CC;font-weight:700;font-size:14.5px;line-height:1.5}
 .stage-lock p b{color:#E9A83A}
+
+/* ============ the flying cigarette over the stage ============ */
+#lobbyCig{position:absolute;z-index:4;left:-95px;top:22%;width:76px;height:48px;border:none;background:transparent;padding:0;cursor:pointer;filter:drop-shadow(2px 3px 0 rgba(51,37,27,.25));touch-action:manipulation}
+#lobbyCig:focus-visible{outline:3px dashed var(--terra);outline-offset:3px;border-radius:12px}
+#lobbyCig svg{width:100%;height:100%;overflow:visible;display:block}
+#lobbyCig .ember{animation:cigEmber .5s ease-in-out infinite alternate}
+#lobbyCig .smk{animation:cigSmoke 1.6s ease-in-out infinite}
+@keyframes cigEmber{from{fill:#D8402C}to{fill:#FFD44D}}
+@keyframes cigSmoke{0%,100%{opacity:.35}50%{opacity:.85}}
 
 /* ============ locked wardrobe items ============ */
 .item.locked{background:#F3EDDD;cursor:pointer}
@@ -161,6 +181,8 @@ footer .love svg{width:15px;height:15px;color:var(--terra)}
 .shop-price .ic{width:16px;height:16px}
 .shop-price .have{color:var(--muted);font-size:12.5px;font-weight:700}
 .shop-actions{display:flex;gap:10px;flex-wrap:wrap}
+.name-card .name-input-wrap{margin-bottom:14px}
+.name-card .name-input-wrap input{width:100%;font:inherit;font-weight:800;border:2.5px solid var(--ink);border-radius:12px;padding:10px 14px;background:var(--paper);color:var(--ink)}
 
 /* ============ chicken minigame ============ */
 #mg{position:fixed;inset:0;z-index:65;background:rgba(38,26,16,.62);display:flex;align-items:center;justify-content:center;padding:12px;overscroll-behavior:contain}
@@ -203,6 +225,23 @@ footer .love svg{width:15px;height:15px;color:var(--terra)}
 .gun .gp{display:inline-flex;align-items:center;gap:4px;color:var(--teal-d)}
 .gun .gp .ic{width:11px;height:11px}
 
+/* ============ game switcher + global leaderboard ============ */
+.gswitch{display:inline-flex;align-items:center;gap:4px;background:var(--cream);border:2.5px solid var(--ink);border-radius:999px;padding:4px;flex:1;min-width:172px;justify-content:center}
+.gtab{display:inline-flex;align-items:center;gap:5px;border:none;background:transparent;font:inherit;font-weight:800;font-size:13.5px;padding:6px 12px;border-radius:999px;cursor:pointer;color:var(--ink);white-space:nowrap}
+.gtab svg{width:15px;height:15px;flex:none;color:#B37F22}
+.gtab.on svg{color:#FFF8EC}
+.gtab.on{background:var(--terra);color:#FFF8EC}
+.lb-list{width:min(94%,390px);max-height:42vh;overflow:auto;background:var(--paper);border:2.5px solid var(--ink);border-radius:14px;padding:6px 10px;box-shadow:4px 4px 0 rgba(51,37,27,.16);text-align:start;font-weight:800;font-size:13.5px}
+.lb-row{display:flex;gap:8px;align-items:center;padding:5px 6px;border-bottom:2px dashed #E7D8BA}
+.lb-row:last-child{border-bottom:none}
+.lb-row.me{background:#EDF6F2;border-radius:8px}
+.lb-rank{width:30px;flex:none;color:var(--terra-d);text-align:center}
+.lb-name{flex:1;min-width:0;overflow:hidden;text-overflow:ellipsis;white-space:nowrap}
+.lb-score{color:var(--teal-d);flex:none}
+.lb-form{display:flex;gap:8px;flex-wrap:wrap;justify-content:center}
+.lb-form input{font:inherit;font-weight:700;border:2.5px solid var(--ink);border-radius:12px;padding:8px 12px;min-width:180px;background:var(--paper);color:var(--ink)}
+.lb-mini{font-size:12px;color:var(--muted);font-weight:700;margin:0;text-align:center}
+
 #toast{position:fixed;top:18px;left:50%;transform:translate(-50%,-90px);z-index:70;background:var(--ink);color:var(--cream);font-weight:700;font-size:14.5px;padding:10px 22px;border-radius:999px;box-shadow:4px 4px 0 rgba(51,37,27,.35);transition:transform .35s cubic-bezier(.2,1.3,.4,1);pointer-events:none;max-width:90vw;text-align:center}
 #toast.show{transform:translate(-50%,0)}
 
@@ -225,7 +264,7 @@ footer .love svg{width:15px;height:15px;color:var(--terra)}
 @keyframes waveL{from{transform:rotate(14deg)}to{transform:rotate(126deg)}}
 #charSvg.dancing #armR{animation:waveR .51s ease-in-out infinite alternate}
 @keyframes waveR{from{transform:rotate(-14deg)}to{transform:rotate(-126deg)}}
-#charSvg.dancing #head{animation:headBop .51s ease-in-out infinite alternate}
+#charSvg.dancing #head{animation:headBop .51s ease-in-out infinite alternate;transform-box:fill-box;transform-origin:center}
 @keyframes headBop{from{transform:rotate(-4deg)}to{transform:rotate(4deg)}}
 
 /* ============ responsive ============ */
@@ -251,8 +290,8 @@ footer .love svg{width:15px;height:15px;color:var(--terra)}
   .head-side{gap:6px}
   main{padding:8px 12px 16px;gap:14px}
   .stage-wrap{height:530px}
-  .stagebar{top:9px;gap:6px}
-  .st-nav{width:40px;height:40px;font-size:21px}
+  .stagebar{top:2px;gap:5px}
+  .st-nav{width:36px;height:36px;font-size:19px}
   .st-chip{font-size:12px;padding:4px 11px;gap:5px}
   .progress{bottom:10px;gap:6px}
   .chip{font-size:12px;padding:4px 10px}
@@ -276,6 +315,10 @@ footer .love svg{width:15px;height:15px;color:var(--terra)}
   .mg-time{width:98px}
   .mg-guns{padding:8px 10px}
   .gun{padding:7px 11px;font-size:12.5px}
+  .gswitch{min-width:100%;order:3}
+  .gtab{font-size:12.5px;padding:6px 10px}
+  #lobbyCig{width:86px;height:56px}
+  .gtab svg{width:13px;height:13px}
   .stage-lock h4{font-size:24px}
   .stage-lock p{font-size:12.5px}
   .stage-lock .lk-ic{width:46px;height:46px}
@@ -310,15 +353,19 @@ footer .love svg{width:15px;height:15px;color:var(--terra)}
   <div class="head-side">
     <button class="btn primary" id="playChickens">
       <svg class="ic" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M6.5 13.5c0-3.2 2.3-5.3 5.4-5.3.9-1.9 3.5-1.9 4.4 0 2.2.4 3.7 2.2 3.7 4.3 0 2.9-2.5 4.6-5.9 4.6H9c-1.5 0-2.5-1.5-2.5-3.6z"/><path d="M8.8 8.1C7.8 6.6 8.5 4.6 10.4 4.3"/><path d="M17.2 15.9c0 2.6-2.3 4.7-4.9 4.7-2.2 0-4.1-1.4-4.7-3.2"/><path d="M12.7 20.6v1.6"/><circle cx="15.9" cy="12.2" r=".45" fill="currentColor" stroke="none"/></svg>
-      <span>صيد الفراخ</span>
+      <span>ألعاب ضياة</span>
+    </button>
+    <button class="btn gold" id="lbBtn">
+      <svg class="ic" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M7 4h10v4.5a5 5 0 0 1-10 0z"/><path d="M7 5.5H4.5a3 3 0 0 0 3 3M17 5.5h2.5a3 3 0 0 1-3 3"/><path d="M12 13.5V16"/><path d="M9.5 20h5M10.2 16h3.6l.8 4h-5.2z"/></svg>
+      <span>لوحة الأبطال</span>
     </button>
     <button class="btn" id="soundBtn">
       <svg class="ic" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M4 9.5v5h3.5l4.5 3.8V5.7L7.5 9.5H4z"/><path d="M15.5 9a4.2 4.2 0 0 1 0 6"/><path d="M17.8 6.8a7.5 7.5 0 0 1 0 10.4"/></svg>
       <span>الصوت: شغال</span>
     </button>
-    <div class="wallet" id="walletChip" title="طيباتك — تكسبها من صيد الفراخ">
+    <div class="wallet" id="walletChip" title="طيباتك — تكسبها من ألعاب ضياة">
       <svg class="ic" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M4.5 19.5C4.5 11 10 4.5 20 4c-.3 9.5-4 15.5-11.5 15.5H4.5z"/><path d="M4.5 19.5C8 13 12.5 9.5 18.5 7.5"/></svg>
-      <b id="walletN">0</b><span>طيبات</span>
+      <b id="walletN">0</b><span>طيبات</span><b id="boostBadge" class="boost-badge" hidden>×2</b>
     </div>
   </div>
 </header>
@@ -381,8 +428,20 @@ footer .love svg{width:15px;height:15px;color:var(--terra)}
     <div class="stage-lock" id="stageScrim" hidden>
       <svg class="lk-ic" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><rect x="4" y="10" width="16" height="11" rx="2.5"/><path d="M8 10V6.5a4 4 0 0 1 8 0V10"/><circle cx="12" cy="15.5" r="1.4" fill="currentColor" stroke="none"/></svg>
       <h4 id="scrimName"></h4>
-      <p>منصة جديدة تليق بضياة — افتحها بـ <b id="scrimPrice"></b> طيبات<br>اكسب الطيبات من لعبة صيد الفراخ · دُق في أي مكان لفتحها</p>
+      <p>منصة جديدة تليق بضياة — افتحها بـ <b id="scrimPrice"></b> طيبات<br>اكسب الطيبات من ألعاب ضياة · دُق في أي مكان لفتحها</p>
     </div>
+
+    <!-- the flying cigarette: a VERY rare guest over the stage — catch it! -->
+    <button id="lobbyCig" type="button" aria-label="السيجارة الطايرة — دُق عليها بسرعة!" hidden>
+      <svg viewBox="0 0 84 52" aria-hidden="true">
+        <path class="smk" d="M70 22 q7 -9 1 -15 q-6 -6 1 -11" stroke="#B9C4CE" stroke-width="3" fill="none" stroke-linecap="round" opacity=".7"/>
+        <g transform="rotate(-7 42 34)">
+          <rect x="27" y="28" width="40" height="12.5" rx="6.2" fill="#F4EFE6" stroke="#33251B" stroke-width="3"/>
+          <rect x="12" y="28" width="16" height="12.5" rx="5.5" fill="#E8845F" stroke="#33251B" stroke-width="3"/>
+          <circle class="ember" cx="69.5" cy="34.2" r="5.2" fill="#D8402C" stroke="#33251B" stroke-width="2"/>
+        </g>
+      </svg>
+    </button>
 
     <!-- the character: drawn body + the PNG head, raw, no circle -->
     <div class="char-box">
@@ -530,10 +589,11 @@ footer .love svg{width:15px;height:15px;color:var(--terra)}
 <footer>
   <div class="hint">
     <svg class="ic" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M9 18.5V5l11-2.5V16"/><circle cx="6.5" cy="18.5" r="2.5"/><circle cx="17.5" cy="16" r="2.5"/></svg>
-    البس قميص وبنطال وحذاء واحتفل مع ضياة — وادخل صيد الفراخ، اكسب طيبات وافتح الملابس والمنصات الجديدة
+    البس قميص وبنطال وحذاء واحتفل مع ضياة — وادخل ألعاب ضياة، اكسب طيبات وافتح الملابس والمنصات الجديدة
   </div>
   <div class="love">
     <span>صُنعت بكل حب لضياة العوضي</span>
+    <span>· نظام الطيبات للدكتور ضياء العوضي</span>
     <svg viewBox="0 0 24 24" fill="currentColor"><path d="M12 21s-7.5-4.7-10-9C.5 8.7 2.6 5 6 5c2.2 0 3.6 1.2 6 3.8C14.4 6.2 15.8 5 18 5c3.4 0 5.5 3.7 4 7-2.5 4.3-10 9-10 9z"/></svg>
   </div>
 </footer>
@@ -570,7 +630,14 @@ footer .love svg{width:15px;height:15px;color:var(--terra)}
 <div id="mg" hidden>
   <div class="mg-box">
     <div class="mg-top">
-      <h2>صيد الفراخ</h2>
+      <div class="gswitch">
+        <button class="gtab on" id="gtabChick" type="button">صيد الفراخ</button>
+        <button class="gtab" id="gtabNinja" type="button">سكّين الطيبات</button>
+        <button class="gtab" id="gtabLb" type="button">
+          <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M7 4h10v4.5a5 5 0 0 1-10 0z"/><path d="M7 5.5H4.5a3 3 0 0 0 3 3M17 5.5h2.5a3 3 0 0 1-3 3"/><path d="M12 13.5V16"/><path d="M9.5 20h5M10.2 16h3.6l.8 4h-5.2z"/></svg>
+          <span>الأبطال</span>
+        </button>
+      </div>
       <div class="mg-wallet">
         <svg class="ic" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M4.5 19.5C4.5 11 10 4.5 20 4c-.3 9.5-4 15.5-11.5 15.5H4.5z"/><path d="M4.5 19.5C8 13 12.5 9.5 18.5 7.5"/></svg>
         <b id="mgCoins">0</b><span>طيبات</span>
@@ -584,6 +651,7 @@ footer .love svg{width:15px;height:15px;color:var(--terra)}
       <div class="mg-hud">
         <span class="mg-pill" id="mgRoundPill">0 طيبات</span>
         <span class="mg-pill" id="mgHitsPill">0 فراخ</span>
+        <span class="mg-pill" id="mgMultPill" hidden style="background:#F9E9C8;border-color:#8A5A2B;color:#7A4A1B">نقاط ×2</span>
       </div>
       <div class="mg-time"><i id="mgTimeBar"></i></div>
       <div class="mg-screen" id="mgStart">
@@ -591,7 +659,9 @@ footer .love svg{width:15px;height:15px;color:var(--terra)}
         <p class="mg-sub">«الفراخ قذرة ومتتاكليش» — نفّذ تعليمات الدكتور ضياة!</p>
         <div class="mg-rules">
           <span>الفرخة البيضا <b>+5</b> · الفرخ السريع <b>+8</b> · الديك يبي <b>3</b> ضربات <b>+15</b></span>
-          <span>الفرخة الدهبية <b>+25</b> · اقرص الدوا <b>+12</b></span>
+          <span>الفرخة الدهبية <b>+25</b> + صوت «نقطة» · فراخ البالون <b>+20</b> (عايزة صبر)</span>
+          <span>في مسرح التلبيس حاجات طايرة نادرة… من يمسكها يجمع نقاط <b>×2</b> في الألعاب</span>
+          <span><b>القناصة تدمّر أي فرخة من أول ضربة</b> — حتى فراخ البالون</span>
           <span>بس <b>متضربش التمرات!</b> ضربة وحدة تنقصك <b>10</b> طيبات</span>
           <span>الطيبات تفتح ملابس ومنصات جديدة في التلبيس</span>
         </div>
@@ -603,11 +673,69 @@ footer .love svg{width:15px;height:15px;color:var(--terra)}
         <p class="mg-endstats" id="mgEndStats"></p>
         <div class="mg-actions">
           <button class="btn primary" id="mgAgain"><span>جولة ثانية</span></button>
+          <button class="btn" id="mgLbJump"><span>سجّل نقاطك</span></button>
           <button class="btn" id="mgHome"><span>رجوع للتلبيس</span></button>
+        </div>
+      </div>
+      <div class="mg-screen" id="njStart" hidden>
+        <h3>سكّين الطيبات</h3>
+        <p class="mg-sub">نظام الطيبات بتاع الدكتور ضياء — قطّع الطيبة، وسيّب الخبيثة تعدي</p>
+        <div class="mg-rules">
+          <span>طيبات: <b>تمر · أرز · بطاطس · موز · نوتيلا · عسَل · قشطة · لحمة · سمك بحري</b> — كلها تكسبك نقاط</span>
+          <span>خبائث: <b>فراخ · كولا · فينو · سوسيس · مكرونة · شيبسي · لبن · بيض · سلطة · فول</b> — تنقّصك!</span>
+          <span><b>سبع تمرات</b> طايرة = مكافأة كبيرة <b>+25</b></span>
+          <span>اسحب صباعك على الشاشة عشان تقطّع — الطيبات تفتح ملابس ومنصات</span>
+        </div>
+        <p class="mg-best">أحسن جولة: <b id="njBest">0</b> طيبات · كل اللي قطّعته: <b id="njTotal">0</b> قطعة</p>
+        <button class="btn primary" id="njGo"><span>يلا نقطّع</span></button>
+      </div>
+      <div class="mg-screen" id="njEnd" hidden>
+        <h3>خلص التقطيع!</h3>
+        <p class="mg-endstats" id="njEndStats"></p>
+        <div class="mg-actions">
+          <button class="btn primary" id="njAgain"><span>جولة ثانية</span></button>
+          <button class="btn" id="njLbJump"><span>سجّل نقاطك</span></button>
+          <button class="btn" id="njHome"><span>رجوع للتلبيس</span></button>
+        </div>
+      </div>
+      <div class="mg-screen" id="lbScreen" hidden>
+        <h3>لوحة أبطال ضياة</h3>
+        <p class="mg-sub" id="lbYourStats"></p>
+        <div class="lb-form" id="lbNameForm">
+          <input id="lbNameInput" maxlength="18" placeholder="اكتب اسمك يا بطل" autocomplete="off">
+          <button class="btn primary" id="lbSaveName" type="button"><span>سجّلني</span></button>
+        </div>
+        <div class="lb-list" id="lbList">…</div>
+        <p class="lb-mini">النقط = طيباتك المكتسبة × (1 + نسبة إكمال اللعبة) · لوحة عالمية لكل اللاعبين</p>
+        <div class="mg-actions">
+          <button class="btn" id="lbRefresh" type="button"><span>تحديث</span></button>
+          <button class="btn" id="lbBack" type="button"><span>رجوع</span></button>
         </div>
       </div>
     </div>
     <div class="mg-guns" id="mgGuns"></div>
+  </div>
+</div>
+
+<!-- ============ first-time name prompt ============ -->
+<div class="shop-back" id="nameModal" hidden>
+  <div class="shop-card name-card" role="dialog" aria-modal="true" aria-live="polite">
+    <div class="shop-head">
+      <div class="shop-thumb">
+        <svg viewBox="0 0 24 24" fill="none" stroke="#B37F22" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" style="width:60%;height:60%"><path d="M7 4h10v4.5a5 5 0 0 1-10 0z"/><path d="M7 5.5H4.5a3 3 0 0 0 3 3M17 5.5h2.5a3 3 0 0 1-3 3"/><path d="M12 13.5V16"/><path d="M9.5 20h5M10.2 16h3.6l.8 4h-5.2z"/></svg>
+      </div>
+      <div class="shop-tx">
+        <h3>إيه اسمك يا بطل؟</h3>
+        <p>عشان نحطك على لوحة الأبطال العالمية بتاعة ضياة</p>
+      </div>
+    </div>
+    <div class="name-input-wrap">
+      <input id="ftNameInput" maxlength="18" placeholder="اكتب اسمك هنا…" autocomplete="off">
+    </div>
+    <div class="shop-actions">
+      <button class="btn primary" id="ftNameGo" type="button"><span>سجّلني</span></button>
+      <button class="btn" id="ftNameLater" type="button"><span>بعدين</span></button>
+    </div>
   </div>
 </div>
 
@@ -673,13 +801,19 @@ const DATA = {
     {id:'leather',  name:'جاكيت جلد',       desc:'ستايل الدراجات',    kind:'leather',price:90, color:'#17171B', zip:'#C9A758'},
     {id:'whitesuit',name:'بدلة بيضاء',      desc:'إطلالة الصيف الرسمية', kind:'suit', price:100, color:'#F2EDE0', lapel:'#D8CCB0', shirt:'#BFD9EA', collar:'#8FA6B8', btn:'#8A7A66', sq:'#177E70'},
     {id:'winesuit', name:'بدلة عنابي',      desc:'جلسات الملوك',      kind:'suit',   price:120, color:'#5E1F2E', lapel:'#471722', shirt:'#F4EFE6', collar:'#B9C2CE', btn:'#C9A758', sq:'#E9A83A'},
-    {id:'pinstripe',name:'بدلة مخططة',      desc:'رجل أعمال',         kind:'suit',   price:150, stripes:true, color:'#23252B', lapel:'#3A3A45', shirt:'#F4EFE6', collar:'#B9C2CE', btn:'#C9A758', sq:'#D8402C'}
+    {id:'pinstripe',name:'بدلة مخططة',      desc:'رجل أعمال',         kind:'suit',   price:150, stripes:true, color:'#23252B', lapel:'#3A3A45', shirt:'#F4EFE6', collar:'#B9C2CE', btn:'#C9A758', sq:'#D8402C'},
+    {id:'polo',       name:'بولو أخضر',      desc:'رياضي وأنيق',        kind:'shirt',  price:40,  color:'#2E7D74', dark:'#25665F'},
+    {id:'teeyellow',  name:'تيشيرت أصفر',    desc:'شمس النور',          kind:'tee',    price:30,  color:'#E9C23A', detail:'stripe'},
+    {id:'hoodiered',  name:'هودي عنابي',     desc:'دفء جلسات الليل',   kind:'hoodie', price:60,  color:'#5E1F2E', dark:'#471722'},
+    {id:'suitgreen',  name:'بدلة زيتي',      desc:'إطلالة الظباط',      kind:'suit',   price:110, color:'#3E4A2E', lapel:'#2E3822', shirt:'#F4EFE6', collar:'#B9C2CE', btn:'#C9A758', sq:'#D8402C'}
   ],
   dress: [
     {id:'sundress', name:'فستان صيفي',      desc:'زهور وربيع',        kind:'dress',  style:'sun',      price:80,  color:'#F2C4CE', accent:'#E8845F'},
     {id:'maid',     name:'زي الخادمة',      desc:'الأذان القط تباع… اختياري', kind:'dress', style:'maid', price:120, color:'#23252B'},
     {id:'redgown',  name:'فستان سهرة أحمر', desc:'ملوك السجادة الحمرا', kind:'dress', style:'gown',   price:150, color:'#B32436', dark:'#8E1A29'},
-    {id:'princess', name:'فستان أميرة',     desc:'طور الطيبات الأميري', kind:'dress', style:'princess', price:200, color:'#F2A7C3', dark:'#D96FA3'}
+    {id:'princess', name:'فستان أميرة',     desc:'طور الطيبات الأميري', kind:'dress', style:'princess', price:200, color:'#F2A7C3', dark:'#D96FA3'},
+    {id:'galaxy', name:'فستان مجرة',       desc:'من سماوات الطيبات',  kind:'dress', style:'gown', price:180, color:'#241A45', dark:'#171128'},
+    {id:'weddingdress', name:'فستان الفرح', desc:'ضياة العريس',        kind:'dress', style:'princess', price:250, color:'#F6F0E4', dark:'#D9CDB0'}
   ],
   bottom: [
     {id:'shorts',         name:'شورت رياضي',      desc:'وضع البيت',            style:'shorts', color:'#909399', dark:'#7C7F85'},
@@ -692,6 +826,10 @@ const DATA = {
     {id:'swim',           name:'شورت بحري',       desc:'جاهز للبحر',            style:'swim',  color:'#2E7D74', dark:'#25665F'},
     {id:'ripped',         name:'جينز ممزق',       desc:'على القديم',            style:'jeans', price:50,  color:'#8FB4D9', dark:'#7A9CC2', st:'#C7DCEE', ripped:true},
     {id:'skirt',          name:'تنورة كسرات',     desc:'أناقة المدرسة',         style:'skirt', price:60,  color:'#5E1F2E', pleat:'#471722'},
+    {id:'shortsred',      name:'شورت أحمر',       desc:'طاقة الملعب',           style:'shorts', price:35, color:'#C03225', dark:'#99281E'},
+    {id:'jeanswhite',     name:'جينز أبيض',       desc:'صيف ناصع',              style:'jeans',  price:45, color:'#EDE8DC', dark:'#D8D0BE', st:'#C9BFA4'},
+    {id:'skirtjeans',     name:'تنورة جينز',      desc:'كاجوال الشباب',         style:'skirt',  price:50, color:'#7FA8D0', pleat:'#6A93BF'},
+    {id:'cargoblack',     name:'كارغو أسود',      desc:'جيوب المهمات',          style:'cargo',  price:55, color:'#3A3A40', dark:'#2B2B31'},
     {id:'dressunder',     name:'تحت الفستان',     desc:'مع الفساتين',           style:'none',  hidden:true}
   ],
   shoes: [
@@ -701,7 +839,10 @@ const DATA = {
     {id:'sneakersr', name:'كوتشي أحمر',  desc:'ينشد الانتباه',    kind:'sneaker', color:'#D8402C', toe:'#B73323', accent:'#F7F3EA', sole:'#E4DCC8', lace:'#F7F3EA'},
     {id:'formal',    name:'حذاء رسمي',   desc:'يكمّل البدلة',     kind:'formal',  color:'#23252B', shine:'#595D6B'},
     {id:'boots',     name:'بوت جلدي',    desc:'لجلسات الشتاء',    kind:'boot',    price:60, color:'#23252B', shine:'#595D6B'},
-    {id:'heels',     name:'كعب أنيق',    desc:'يلبس مع الفساتين', kind:'heel',    price:70, color:'#B32436', sole:'#191919'}
+    {id:'heels',     name:'كعب أنيق',    desc:'يلبس مع الفساتين', kind:'heel',    price:70, color:'#B32436', sole:'#191919'},
+    {id:'sneakersg', name:'كوتشي أخضر',  desc:'لون العشبة الطبيعية', kind:'sneaker', price:55, color:'#2E7D74', toe:'#25665F', accent:'#F4EFE6', sole:'#E4DCC8', lace:'#F4EFE6'},
+    {id:'sandal',    name:'صندل صيفي',   desc:'خفيف ومريح',        kind:'sandal',  price:40, color:'#A9713F', strap:'#23252B'},
+    {id:'bootsbrown',name:'بوت بني',     desc:'رحلات البر',        kind:'boot',    price:75, color:'#6E4224', shine:'#8B5A34'}
   ],
   acc: [
     {id:'watches',    name:'ساعتين ضياة', desc:'واحدة داكنة وواحدة فضية', zone:'top'},
@@ -711,7 +852,10 @@ const DATA = {
     {id:'tie',        name:'ربطة عنق',    desc:'تكمّل البدلة',             zone:'top'},
     {id:'heartshades',name:'نظارة قلوب',  desc:'حب الدكتور',               zone:'head', price:50},
     {id:'catears',    name:'أذان قط',     desc:'مياو مياو',                zone:'head', price:60},
-    {id:'halo',       name:'هالة نور',    desc:'قديس الطيبات',             zone:'head', price:80}
+    {id:'halo',       name:'هالة نور',    desc:'قديس الطيبات',             zone:'head', price:80},
+    {id:'bowtie',     name:'بابيون أنيق', desc:'يكمّل التكسيدو',            zone:'top',  price:40},
+    {id:'crown',      name:'تاج الملوك', desc:'ملك الطيبات',               zone:'head', price:100},
+    {id:'cigarette',  name:'سيجارة ضياة', desc:'سرّ من أسرار اللعبة…',      zone:'head', secret:true}
   ]
 };
 Object.keys(DATA).forEach(c => DATA[c].forEach(it => it.cat = c));
@@ -734,36 +878,75 @@ let curStageId = stagesOwned.has(sg.stage) ? sg.stage : "theater";
 let bestRound = +(sg.best || 0), totalChickens = +(sg.chickens || 0);
 soundOn = sg.sound !== false;
 let lastRealBottom = "shorts";
+// v3 progress — lifetime tayyibat earned, ninja stats, leaderboard identity.
+// Old saves (v2) keep everything they had; `earned` seeds from the wallet so
+// no progress is lost when this update lands on top of an old save.
+let earned = Math.max(0, +(sg.earned !== undefined ? sg.earned : coins));
+let ninjaBest = +((sg.ninja && sg.ninja.best) || 0), ninjaTotal = +((sg.ninja && sg.ninja.total) || 0);
+let lbName = (sg.lb && sg.lb.name) || "";
+let lbBest = +((sg.lb && sg.lb.best) || 0);
 
 const GUNS = [
   {id:"pump",    name:"بمب ضياة",  desc:"السلاح الرسمي — طلعة طلعة", price:0,    rate:620,  radius:36,  auto:false},
   {id:"dual",    name:"مسدسين",    desc:"سرعة نار مضاعفة",            price:150,  rate:270,  radius:32,  auto:false},
   {id:"shotgun", name:"الشوزن",    desc:"طلقة واحدة تصيد كل اللي حوالين", price:400,  rate:950,  radius:100, auto:false, splash:true},
   {id:"rifle",   name:"الرشاش",    desc:"استمر ضاغط وخليها تمطر",     price:700,  rate:125,  radius:26,  auto:true,  spread:22},
-  {id:"sniper",  name:"القناصة",   desc:"زووووم… بوووم",              price:1000, rate:1500, radius:85,  auto:false}
+  {id:"sniper",  name:"القناصة",   desc:"تدمّر أي فرخة من أول ضربة",     price:1000, rate:1500, radius:85,  auto:false, killAll:true}
 ];
 const gunById = id => GUNS.find(g => g.id === id) || GUNS[0];
 
 function saveGame(){
   const data = {
-    v: 2, coins,
+    v: 3, coins, earned,
     unlocked: [...unlocked],
     stages: [...stagesOwned], stage: curStageId,
     guns: [...gunsOwned], gun: curGun,
     best: bestRound, chickens: totalChickens,
+    ninja: { best: ninjaBest, total: ninjaTotal },
+    lb: { name: lbName, best: lbBest },
+    boost: boostUntil,
     outfit: { top: state.top, bottom: state.bottom, shoes: state.shoes, acc: [...state.acc] },
     sound: soundOn
   };
   try{ localStorage.setItem(SAVE_KEY, JSON.stringify(data)); }catch(e){}
   try{ document.cookie = COOKIE_KEY + "=" + encodeURIComponent(JSON.stringify(data)) + "; max-age=31536000; path=/; SameSite=Lax"; }catch(e){}
 }
+/* ×2 tayyibat boost — catch the flying cigarette over the stage to get it.
+   It is a strict two-minute guest: when the timer dies the ×2 dies AND the
+   mouth cigarette flies off Diaa's face (back to being a secret). */
+let boostUntil = +(sg.boost || 0) || 0;
+let boostWasOn = false;
+function boostActive(){ return Date.now() < boostUntil; }
+function updateBoostBadge(){
+  const b = document.getElementById("boostBadge");
+  if(!b) return;
+  if(!boostActive()){
+    b.hidden = true;
+    if(boostWasOn) expireCig();   // the two minutes are over — cigarette + ×2 gone
+    boostWasOn = false;
+    return;
+  }
+  boostWasOn = true;
+  b.hidden = false;
+  b.textContent = "×2 · " + Math.ceil((boostUntil - Date.now())/1000) + "ث";
+}
+function expireCig(){
+  boostUntil = 0;
+  if(state.acc.has('cigarette')) state.acc.delete('cigarette');
+  document.querySelectorAll('#charSvg .acc-cigarette').forEach(e=> e.classList.remove('on'));
+  if(unlocked.has('cigarette')){ unlocked.delete('cigarette'); renderGrid(); }
+  saveGame();
+  toast('خلصت الدقيقتين — السيجارة طارت في الهوا!');
+}
+setInterval(updateBoostBadge, 1000);
 function refreshWallet(){
   const w = document.getElementById("walletN");
   if(w) w.textContent = coins;
   const m = document.getElementById("mgCoins");
   if(m) m.textContent = coins;
+  updateBoostBadge();
 }
-function isOwned(item){ return !item.price || unlocked.has(item.id); }
+function isOwned(item){ return (!item.price && !item.secret) || unlocked.has(item.id); }
 
 /* ================================================================
    Clothing generators
@@ -993,6 +1176,28 @@ const HEART_SHADES =
     '<path d="M144 62 H156" stroke="'+INK+'" stroke-width="3"/>' +
     '<path d="M124 64 L114 68 M176 64 L186 68" stroke="'+INK+'" stroke-width="3" stroke-linecap="round"/>' +
   '</g>';
+const CROWN =
+  '<g class="acc acc-crown">' +
+    '<path d="M124 16 L124 -2 L137 8 L150 -4 L163 8 L176 -2 L176 16 Z" fill="#E9A83A" stroke="'+INK+'" stroke-width="3" stroke-linejoin="round"/>' +
+    '<path d="M124 16 H176" stroke="#B37F22" stroke-width="3"/>' +
+    '<circle cx="150" cy="11" r="3.4" fill="#C03225" stroke="'+INK+'" stroke-width="1.5"/>' +
+    '<circle cx="134" cy="12" r="2.2" fill="#2E7D74" stroke="'+INK+'" stroke-width="1.2"/>' +
+    '<circle cx="166" cy="12" r="2.2" fill="#2E7D74" stroke="'+INK+'" stroke-width="1.2"/>' +
+  '</g>';
+const BOWTIE =
+  '<g class="acc acc-bowtie">' +
+    '<path d="M150 152 L134 143 Q129 152 134 161 Z M150 152 L166 143 Q171 152 166 161 Z" fill="#C03225" stroke="'+INK+'" stroke-width="2.5" stroke-linejoin="round"/>' +
+    '<circle cx="150" cy="152" r="4.2" fill="#8E2B1F" stroke="'+INK+'" stroke-width="2"/>' +
+  '</g>';
+const CIGARETTE =
+  '<g class="acc acc-cigarette">' +
+    '<g transform="rotate(13 158 106)">' +
+      '<rect x="156" y="102" width="24" height="7.5" rx="3.7" fill="#F4EFE6" stroke="'+INK+'" stroke-width="2.2"/>' +
+      '<rect x="147" y="102" width="10" height="7.5" rx="3" fill="#E8845F" stroke="'+INK+'" stroke-width="2.2"/>' +
+      '<circle cx="182" cy="105.8" r="3.2" fill="#D8402C" stroke="'+INK+'" stroke-width="1.8"/>' +
+    '</g>' +
+    '<path d="M186 100 q4 -7 -1 -12 q-4 -5 1 -9" stroke="#B9C4CE" stroke-width="2.4" fill="none" stroke-linecap="round" opacity=".8"/>' +
+  '</g>';
 
 function buildBottom(it){
   const c = it.color;
@@ -1113,7 +1318,7 @@ function inject(sel, html){ if(html) document.querySelector(sel).insertAdjacentH
     inject('#slL',  wrap(it,'top', g.slL));
     inject('#slR',  wrap(it,'top', g.sr));
   });
-  inject('#head', MAID_BAND + CAT_EARS + HALO + HEART_SHADES);
+  inject('#head', MAID_BAND + CAT_EARS + HALO + HEART_SHADES + CROWN + BOWTIE + CIGARETTE);
   document.querySelectorAll('#charSvg .it-top-tank, #charSvg .it-bottom-shorts').forEach(e=> e.classList.add('on'));
 })();
 
@@ -1229,7 +1434,7 @@ function thumb(item){
               '<rect x="8" y="33" width="32" height="6" rx="3" fill="'+item.sole+'" stroke="'+S+'" '+W+'/>' +
               '<path d="M30 20 l4 12" stroke="'+item.accent+'" stroke-width="3.5" stroke-linecap="round"/>' +
               '<path d="M22 22 l6 3 M22 27 l7 3" stroke="'+item.lace+'" stroke-width="1.8" stroke-linecap="round"/>';
-    } else if(item.kind === 'slipper'){
+    } else if(item.kind === 'slipper' || item.kind === 'sandal'){
       inner = '<ellipse cx="24" cy="31" rx="15" ry="8" fill="'+item.color+'" stroke="'+S+'" '+W+'/>' +
               '<path d="M24 29 L14 22 M24 29 L34 22" stroke="'+item.strap+'" stroke-width="4" stroke-linecap="round"/>' +
               '<circle cx="24" cy="29" r="2.5" fill="#E9A83A" stroke="'+S+'" stroke-width="1.5"/>';
@@ -1282,6 +1487,21 @@ function thumb(item){
               '<path d="M34 32 C28 26 30 18 34 22 C38 18 40 26 34 32 z" fill="#C03225" stroke="'+S+'" stroke-width="2"/>' +
               '<path d="M19 24 h10 M9 24 l-4 3 M39 24 l4 3" stroke="'+S+'" stroke-width="2" stroke-linecap="round"/>' +
               '<path d="M12 22 q1 -2 3 -1.5 M32 22 q1 -2 3 -1.5" stroke="#F4EFE6" stroke-width="1.5" fill="none"/>';
+    } else if(item.id === 'crown'){
+      inner = '<path d="M13 18 L13 8 L18.5 13 L24 6.5 L29.5 13 L35 8 L35 18 Z" fill="#E9A83A" stroke="'+S+'" '+W+' stroke-linejoin="round"/>' +
+              '<path d="M13 18 H35" stroke="#B37F22" stroke-width="2"/>' +
+              '<circle cx="24" cy="15.5" r="1.8" fill="#C03225"/>' +
+              '<circle cx="17" cy="16" r="1.2" fill="#2E7D74"/><circle cx="31" cy="16" r="1.2" fill="#2E7D74"/>';
+    } else if(item.id === 'bowtie'){
+      inner = '<path d="M24 26 L15 20.5 Q13 26 15 31.5 Z M24 26 L33 20.5 Q35 26 33 31.5 Z" fill="#C03225" stroke="'+S+'" '+W+' stroke-linejoin="round"/>' +
+              '<circle cx="24" cy="26" r="2.6" fill="#8E2B1F" stroke="'+S+'" stroke-width="1.6"/>';
+    } else if(item.id === 'cigarette'){
+      inner = '<g transform="rotate(18 24 26)">' +
+                '<rect x="16" y="23" width="18" height="5.5" rx="2.7" fill="#F4EFE6" stroke="'+S+'" stroke-width="1.8"/>' +
+                '<rect x="9" y="23" width="7" height="5.5" rx="2.3" fill="#E8845F" stroke="'+S+'" stroke-width="1.8"/>' +
+                '<circle cx="35.5" cy="25.7" r="2.2" fill="#D8402C" stroke="'+S+'" stroke-width="1.4"/>' +
+              '</g>' +
+              '<path d="M37 21 q3 -5 -1 -8 q-3 -4 1 -7" stroke="#B9C4CE" stroke-width="1.8" fill="none" stroke-linecap="round"/>';
     } else {
       inner = '<path d="M21 6 h6 l-2 5 h-2 z" fill="#8E2B1F"/><path d="M22 11 L20 14 L24 38 L28 14 L26 11 z" fill="#C03225" stroke="'+S+'" stroke-width="2"/>' +
               '<path d="M21 20 l6 2.5 M21.8 26 l5.6 2.3" stroke="#E9A83A" stroke-width="2"/>';
@@ -1347,6 +1567,74 @@ function loadRemoteFace(){
 initFace();
 
 /* ================================================================
+   WINFACE — the "surprised Diaa" meme (winface.png): while the dress-up
+   song plays his face swaps to winface, then back to the old face.
+   Sources: remembered drop → winface.png beside the file → bundled URL.
+================================================================ */
+const WINFACE_URL = "https://z-cdn-media.chatglm.cn/files/6ce9e8e1-2ea2-4cf2-b378-775f5483315b.png?auth_key=1892701180-7cdc1f4f30b941d2ae2388ffa11972ce-0-90d984006ee932aaa782d35b749822a5";
+const LS_WINFACE = "diya-winface-img";
+let winImg = null, winSrc = null, headBefore = null;
+function setWinHead(img, src){ winImg = img; winSrc = src; }
+(function resolveWinface(){
+  try{
+    const saved = localStorage.getItem(LS_WINFACE);
+    if(saved){
+      const img = new Image();
+      img.onload = ()=> setWinHead(img, saved);
+      img.src = saved;
+      return;
+    }
+  }catch(e){}
+  const local = new Image();
+  local.onload = ()=> setWinHead(local, 'winface.png');
+  local.onerror = ()=>{
+    const img = new Image();
+    img.referrerPolicy = 'no-referrer';
+    img.onload = ()=> setWinHead(img, WINFACE_URL);
+    img.onerror = ()=>{};   // no winface anywhere → party plays with the normal face
+    img.src = WINFACE_URL;
+  };
+  local.src = 'winface.png';
+})();
+function swapToWinface(){
+  if(!winImg || !winSrc) return;
+  try{
+    const hi = document.getElementById('headImg');
+    if(!headBefore){
+      headBefore = {x:hi.getAttribute('x'), y:hi.getAttribute('y'), w:hi.getAttribute('width'),
+                    h:hi.getAttribute('height'), href:hi.getAttribute('href') || '',
+                    disp:document.getElementById('headPhoto').style.display};
+    }
+    // the meme head is HUGE — big-head-on-a-tiny-body meme proportions:
+    // nearly twice the old swap, spanning almost the whole stage width,
+    // chin resting on the chest and the hairline poking past the stage top.
+    const MAXW = 240, MAXH = 300, BOTTOM = 240, CX = 150;
+    const k = Math.min(MAXW / winImg.width, MAXH / winImg.height);
+    const w = winImg.width * k, h = winImg.height * k;
+    hi.setAttribute('x', (CX - w/2).toFixed(1));
+    hi.setAttribute('y', (BOTTOM - h).toFixed(1));   // can poke above the viewBox — #charSvg has overflow:visible
+    hi.setAttribute('width', w.toFixed(1));
+    hi.setAttribute('height', h.toFixed(1));
+    hi.setAttribute('preserveAspectRatio', 'none');   // w/h already match the aspect
+    hi.setAttribute('href', winSrc);
+    document.getElementById('headPhoto').style.display = '';
+    charSvg.classList.add('winface');   // drawn head accessories step aside — the meme gets the stage
+  }catch(e){}
+}
+function restoreFace(){
+  if(!headBefore) return;
+  try{
+    const hi = document.getElementById('headImg');
+    hi.setAttribute('x', headBefore.x); hi.setAttribute('y', headBefore.y);
+    hi.setAttribute('width', headBefore.w); hi.setAttribute('height', headBefore.h);
+    hi.setAttribute('href', headBefore.href);
+    document.getElementById('headPhoto').style.display = headBefore.disp;
+    charSvg.classList.remove('winface');   // the drawn accessories come back
+    headBefore = null;
+  }catch(e){}
+}
+
+/* ================================================================
    AUDIO — auto-detected mp3 next to the file, built-in tune otherwise
 ================================================================ */
 const customSong = document.getElementById('customSong');
@@ -1377,6 +1665,33 @@ function probeSongFile(i){
 }
 resolveSong();
 
+/* ---- no2ta.mp3 — the golden-chicken kill sound ---------------- */
+const NO2TA_FILES = ["no2ta.mp3", "نقطة.mp3", "no2ta.m4a"];
+const LS_NO2TA = "diya-no2ta-audio";
+let no2taSrc = null;
+function probeNo2taFile(i){
+  if(i >= NO2TA_FILES.length) return;   // not found → golden chicken keeps its chime
+  const a = document.createElement('audio');
+  a.preload = 'metadata';
+  a.addEventListener('loadedmetadata', ()=>{ no2taSrc = NO2TA_FILES[i]; }, {once:true});
+  a.addEventListener('error', ()=> probeNo2taFile(i + 1), {once:true});
+  a.src = NO2TA_FILES[i];
+}
+(function resolveNo2ta(){
+  try{
+    const saved = localStorage.getItem(LS_NO2TA);
+    if(saved){ no2taSrc = saved; return; }
+  }catch(e){}
+  probeNo2taFile(0);
+})();
+function playNo2ta(){
+  if(!soundOn || !no2taSrc) return;
+  try{
+    const au = new Audio(no2taSrc);
+    au.play().catch(()=>{});
+  }catch(e){}
+}
+
 // silent convenience: dropping an mp3 or a photo anywhere on the page just works
 ['dragover', 'dragenter'].forEach(ev => window.addEventListener(ev, e => e.preventDefault()));
 window.addEventListener('drop', e=>{
@@ -1385,20 +1700,34 @@ window.addEventListener('drop', e=>{
   if(!f) return;
   if(/^audio\//.test(f.type) || /\.(mp3|m4a|ogg|wav)$/i.test(f.name)){
     const r = new FileReader();
+    const wantNo2ta = /no2ta|نقطة/i.test(f.name || '');
     r.onload = ()=>{
-      setSong(r.result, f.name);
-      try{ if(r.result.length < 3800000) localStorage.setItem(LS_SONG, r.result); }catch(err){}
-      toast('استوعبت الأغنية! بتشتغل أول ما تكمل الإطلالة');
+      if(wantNo2ta){
+        no2taSrc = r.result;
+        try{ if(r.result.length < 2500000) localStorage.setItem(LS_NO2TA, r.result); }catch(err){}
+        toast('استوعبت صوت النقطة! يشتغل أول ما تصطاد الفرخة الدهبية');
+      } else {
+        setSong(r.result, f.name);
+        try{ if(r.result.length < 3800000) localStorage.setItem(LS_SONG, r.result); }catch(err){}
+        toast('استوعبت الأغنية! بتشتغل أول ما تكمل الإطلالة');
+      }
     };
     r.readAsDataURL(f);
   } else if(/^image\//.test(f.type)){
     const r = new FileReader();
+    const wantWin = /winface|ويِن/i.test(f.name || '');
     r.onload = ()=>{
       const img = new Image();
       img.onload = ()=>{
-        setHead(img, r.result);
-        try{ localStorage.setItem(LS_FACE, r.result); }catch(err){}
-        toast('هذي الصورة صارت وجه ضياة!');
+        if(wantWin){
+          setWinHead(img, r.result);
+          try{ localStorage.setItem(LS_WINFACE, r.result); }catch(err){}
+          toast('استوعبت وجه الفوز! بيظهر وقت الأغنية');
+        } else {
+          setHead(img, r.result);
+          try{ localStorage.setItem(LS_FACE, r.result); }catch(err){}
+          toast('هذي الصورة صارت وجه ضياة!');
+        }
       };
       img.src = r.result;
     };
@@ -1437,13 +1766,17 @@ function renderTabs(){
 }
 function renderGrid(){
   itemGrid.innerHTML = '';
-  DATA[activeCat].forEach(item=>{
+  // dresses are equippable from the bottom tab too — they ride along there
+  const list = activeCat === 'bottom' ? DATA.bottom.concat(DATA.dress) : DATA[activeCat];
+  list.forEach(item=>{
     if(item.hidden) return;
-    const isOn = activeCat === 'acc'
+    const cat = item.cat;
+    const isOn = cat === 'acc'
       ? state.acc.has(item.id)
-      : (activeCat === 'dress' ? state.top === item.id : state[activeCat] === item.id);
+      : (cat === 'dress' ? state.top === item.id : state[cat] === item.id);
     const owned = isOwned(item);
     const b = document.createElement('button');
+    b.type = 'button';
     b.className = 'item' + (isOn && owned ? ' on' : '') + (owned ? '' : ' locked');
     b.innerHTML =
       '<span class="chk"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="3.5" stroke-linecap="round" stroke-linejoin="round"><path d="M4.5 12.5l5 5L20 6.5"/></svg></span>' +
@@ -1451,18 +1784,24 @@ function renderGrid(){
       '<span class="th-wrap">'+thumb(item)+'</span>' +
       '<span class="nm">'+item.name+'</span>' +
       '<span class="ds">'+item.desc+'</span>' +
-      (owned ? '' : '<span class="pr"><svg class="ic" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M4.5 19.5C4.5 11 10 4.5 20 4c-.3 9.5-4 15.5-11.5 15.5H4.5z"/><path d="M4.5 19.5C8 13 12.5 9.5 18.5 7.5"/></svg><b>'+item.price+'</b> طيبات</span>');
+      (owned ? '' : (item.secret
+        ? '<span class="pr">سرّ من أسرار اللعبة</span>'
+        : '<span class="pr"><svg class="ic" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M4.5 19.5C4.5 11 10 4.5 20 4c-.3 9.5-4 15.5-11.5 15.5H4.5z"/><path d="M4.5 19.5C8 13 12.5 9.5 18.5 7.5"/></svg><b>'+item.price+'</b> طيبات</span>'));
     b.addEventListener('pointerdown', e=>{
-      if(!owned){ e.preventDefault(); openShopItem(item); return; }
-      startDrag(e, activeCat, item, b);
+      if(!owned){ e.preventDefault(); secretHint(item); return; }
+      startDrag(e, cat, item, b);
     });
-    b.addEventListener('click', e=>{
-      if(e.detail !== 0 || suppressClick) return;
-      if(!owned){ openShopItem(item); return; }
-      onCardClick(activeCat, item.id);
+    b.addEventListener('click', ()=>{
+      if(performance.now() - lastPtrEquip < 700) return;   // pointer events already handled it
+      if(!owned){ secretHint(item); return; }
+      onCardClick(cat, item.id);
     });
     itemGrid.appendChild(b);
   });
+}
+function secretHint(item){
+  if(item.secret) toast('دي سرّ! في حاجة بتطير نادرًا فوق المسرح… من يمسكها يفتحها');
+  else openShopItem(item);
 }
 
 /* ================================================================
@@ -1633,6 +1972,7 @@ const stageWrap = document.querySelector('.stage-wrap');
 const dragGhost = document.getElementById('dragGhost');
 const snapring = document.getElementById('snapring');
 let drag = null, suppressClick = false;
+let lastPtrEquip = -1e9;   // timestamp of the last tap handled by pointer events
 
 const ZONES = {
   head:  {r:[92,4,208,130],   cx:150, cy:70},
@@ -1642,7 +1982,8 @@ const ZONES = {
 };
 const zoneEl = z => document.querySelector('.zone[data-z="'+z+'"]');
 const zlEl   = z => document.querySelector('.zl[data-z="'+z+'"]');
-const targetZoneOf = item => item.zone || (item.cat === 'dress' ? 'top' : item.cat);
+const targetZoneOf = (item, fromCat) => item.zone || (item.cat === 'dress' ? (fromCat === 'bottom' ? 'bottom' : 'top') : item.cat);
+const dressZoneOK = (item, z) => !!item && item.cat === 'dress' && (z === 'top' || z === 'bottom');
 
 function svgPoint(cx, cy){
   const rect = charSvg.getBoundingClientRect();
@@ -1667,8 +2008,8 @@ function clearZones(){
 }
 function startDrag(e, cat, item, card){
   if(e.button !== undefined && e.button !== 0) return;
-  if(!isOwned(item)){ openShopItem(item); return; }
-  drag = {cat, id:item.id, item, card, sx:e.clientX, sy:e.clientY, started:false, tz:targetZoneOf(item),
+  if(!isOwned(item)){ secretHint(item); return; }
+  drag = {cat, id:item.id, item, card, sx:e.clientX, sy:e.clientY, started:false, tz:targetZoneOf(item, activeCat),
           touch: e.pointerType === 'touch'};
 }
 /* touch helper: if the stage is scrolled out of view (phone layout),
@@ -1702,9 +2043,9 @@ function onMove(e){
   const z = zoneAt(svgPoint(e.clientX, e.clientY));
   document.querySelectorAll('.zone').forEach(el=>{
     el.classList.remove('hot','wrong');
-    if(z && el.dataset.z === z && z !== drag.tz) el.classList.add('show','wrong');
+    if(z && el.dataset.z === z && z !== drag.tz && !dressZoneOK(drag.item, z)) el.classList.add('show','wrong');
   });
-  if(z === drag.tz) zoneEl(z).classList.add('hot');
+  if(z && (z === drag.tz || dressZoneOK(drag.item, z))) zoneEl(z).classList.add('hot');
 }
 function onUp(e){
   if(!drag) return;
@@ -1712,11 +2053,17 @@ function onUp(e){
   clearZones();
   d.card.classList.remove('lifted');
   document.body.classList.remove('dragging');
-  if(!d.started){ onCardClick(d.cat, d.id); if(d.touch) revealStage('nearest'); return; }
+  if(!d.started){
+    lastPtrEquip = performance.now();
+    onCardClick(d.cat, d.id);
+    if(d.touch) revealStage('nearest');
+    return;
+  }
   // touch: released back over the item card → it was a wobbly tap, equip it
   if(d.touch && inRect(e.clientX, e.clientY, d.card.getBoundingClientRect())){
     dragGhost.hidden = true;
     dragGhost.classList.remove('fly','land');
+    lastPtrEquip = performance.now();
     onCardClick(d.cat, d.id);
     revealStage('nearest');
     return;
@@ -1725,16 +2072,22 @@ function onUp(e){
   setTimeout(()=> suppressClick = false, 350);
   const z = zoneAt(svgPoint(e.clientX, e.clientY));
   const onStage = inRect(e.clientX, e.clientY, stageWrap.getBoundingClientRect());
-  if(z === d.tz) return lockDrop(d, z);
+  if(z && (z === d.tz || dressZoneOK(d.item, z))) return lockDrop(d, z);
   if(!z && onStage) return lockDrop(d, d.tz);
   if(z && z !== d.tz) return rejectDrop(d);
   flyBack(d);
 }
-function cancelDrag(){
+function cancelDrag(e){
   if(!drag) return;
   const d = drag; drag = null;
   clearZones();
-  if(d.started) flyBack(d);
+  if(d.started){ flyBack(d); }
+  else if(e && e.clientX !== undefined && Math.hypot(e.clientX - d.sx, e.clientY - d.sy) < 12){
+    // the browser stole this touch (scrolling usually) — still treat quick,
+    // steady releases as taps so item buttons never feel dead on mobile
+    lastPtrEquip = performance.now();
+    onCardClick(d.cat, d.id);
+  }
   d.card && d.card.classList.remove('lifted');
   document.body.classList.remove('dragging');
   dragGhost.hidden = true;
@@ -2037,12 +2390,14 @@ function endParty(natural){
   if(!partyOn) return;
   partyOn = false;
   stopMusicOnly();
+  restoreFace();                  // back to the old face after the song
   charSvg.classList.remove('dancing');
   spawnUntil = 0;                 // confetti drains out, no new pieces
 }
 
 function startParty(){
   playVictory();
+  swapToWinface();          // his surprised meme face while the song plays
   burst(160);
   spawnUntil = performance.now() + 5200;
   startLoop();
@@ -2301,7 +2656,8 @@ const BIRDS = {
   rooster: {size:74, speed:85,  hp:3, coins:15},
   gold:    {size:48, speed:330, hp:1, coins:25},
   date:    {size:32, speed:120, hp:1, coins:-10},
-  pill:    {size:26, speed:180, hp:1, coins:12}
+  pill:    {size:26, speed:180, hp:1, coins:12},
+  balloon: {size:44, speed:120, hp:3, coins:20}   // high-flyer — worth more, needs patience
 };
 
 const GUN_ICONS = {
@@ -2320,16 +2676,51 @@ function sizeMgCanvas(){
 }
 window.addEventListener('resize', ()=>{ if(mgOpen) sizeMgCanvas(); });
 
+const njStart = document.getElementById('njStart');
+const njEnd = document.getElementById('njEnd');
+const njEndStats = document.getElementById('njEndStats');
+const lbScreen = document.getElementById('lbScreen');
+const mgMultPill = document.getElementById('mgMultPill');
+let mgMode = 'chicken', lastGameMode = 'chicken';   // 'chicken' | 'ninja' | 'lb' — all live under this one tab
+
+function mgAllScreens(v){ mgStart.hidden = v; njStart.hidden = v; mgEnd.hidden = v; njEnd.hidden = v; lbScreen.hidden = v; }
+function hudLabels(){
+  hudCache = '';
+  mgRoundPill.textContent = '0 طيبات';
+  mgHitsPill.textContent = mgMode === 'chicken' ? '0 فراخ' : '0 قطعة';
+  mgMultPill.hidden = true;
+}
+function setMgMode(m, silent){
+  if(mgMode === m){ if(m === 'lb') openLb(); return; }   // tapping الأبطال again refreshes the board
+  if(m !== 'lb') lastGameMode = m;
+  mgMode = m;
+  stopRound();
+  document.getElementById('gtabChick').classList.toggle('on', m === 'chicken');
+  document.getElementById('gtabNinja').classList.toggle('on', m === 'ninja');
+  document.getElementById('gtabLb').classList.toggle('on', m === 'lb');
+  mgGuns.style.display = (m === 'chicken') ? '' : 'none';
+  mgAllScreens(true);
+  if(m === 'chicken') mgStart.hidden = false;
+  else if(m === 'ninja') njStart.hidden = false;
+  else openLb();
+  if(!silent) blip(m === 'chicken' ? 600 : m === 'ninja' ? 660 : 840);
+  hudLabels();
+}
 function mgShow(){
   mgOpen = true;
   mg.hidden = false;
   sizeMgCanvas();
-  mgStart.hidden = false;
-  mgEnd.hidden = true;
+  mgAllScreens(true);
+  if(mgMode === 'chicken') mgStart.hidden = false;
+  else if(mgMode === 'ninja') njStart.hidden = false;
+  else openLb();
   document.getElementById('mgBest').textContent = bestRound;
   document.getElementById('mgTotal').textContent = totalChickens;
+  document.getElementById('njBest').textContent = ninjaBest;
+  document.getElementById('njTotal').textContent = ninjaTotal;
   refreshWallet();
   renderGunBar();
+  hudLabels();
 }
 function mgHide(){
   mgOpen = false;
@@ -2337,10 +2728,19 @@ function mgHide(){
   stopRound();
 }
 document.getElementById('playChickens').addEventListener('click', ()=>{ blip(700); mgShow(); });
+document.getElementById('lbBtn').addEventListener('click', ()=>{ mgShow(); setMgMode('lb'); });   // the golden trophy button
 document.getElementById('mgClose').addEventListener('click', ()=> mgHide());
 document.getElementById('mgGo').addEventListener('click', ()=>{ blip(760); startRound(); });
 document.getElementById('mgAgain').addEventListener('click', ()=>{ blip(760); startRound(); });
 document.getElementById('mgHome').addEventListener('click', ()=> mgHide());
+document.getElementById('gtabChick').addEventListener('click', ()=> setMgMode('chicken'));
+document.getElementById('gtabNinja').addEventListener('click', ()=> setMgMode('ninja'));
+document.getElementById('gtabLb').addEventListener('click', ()=> setMgMode('lb'));
+document.getElementById('njGo').addEventListener('click', ()=>{ blip(760); startNinja(); });
+document.getElementById('njAgain').addEventListener('click', ()=>{ blip(760); startNinja(); });
+document.getElementById('njHome').addEventListener('click', ()=> mgHide());
+document.getElementById('mgLbJump').addEventListener('click', ()=>{ blip(820); setMgMode('lb'); });
+document.getElementById('njLbJump').addEventListener('click', ()=>{ blip(820); setMgMode('lb'); });
 
 function startRound(){
   MGS.birds.length = 0; MGS.parts.length = 0; MGS.texts.length = 0;
@@ -2348,8 +2748,7 @@ function startRound(){
   MGS.timeLeft = ROUND_TIME; MGS.spawnIn = .5; MGS.lastShot = 0; MGS.shake = 0; MGS.flash = 0;
   mgRunning = true;
   mgLastT = 0;
-  mgStart.hidden = true;
-  mgEnd.hidden = true;
+  mgAllScreens(true);
   hudCache = '';
   updateMgHud();
   if(mgRAF) cancelAnimationFrame(mgRAF);
@@ -2372,15 +2771,27 @@ function finishRound(){
   document.getElementById('mgTotal').textContent = totalChickens;
   mgEnd.hidden = false;
   sparkle();
+  maybeAutoSubmit();
 }
 
 function updateMgHud(){
+  if(mgMode === 'ninja'){
+    const s2 = Math.ceil(Math.max(0, NJS.timeLeft)) + '|' + NJS.pts + '|' + NJS.sliced;
+    if(s2 === hudCache) return;
+    hudCache = s2;
+    mgTimeBar.style.width = (Math.max(0, NJS.timeLeft)/NJ_TIME*100) + '%';
+    mgRoundPill.textContent = NJS.pts + ' طيبات';
+    mgHitsPill.textContent = NJS.sliced + ' قطعة';
+    mgMultPill.hidden = !boostActive();   // show the ×2 boost here too
+    return;
+  }
   const s = Math.ceil(Math.max(0, MGS.timeLeft)) + '|' + MGS.coinsRound + '|' + MGS.chickens;
   if(s === hudCache) return;
   hudCache = s;
   mgTimeBar.style.width = (Math.max(0, MGS.timeLeft)/ROUND_TIME*100) + '%';
   mgRoundPill.textContent = MGS.coinsRound + ' طيبات';
   mgHitsPill.textContent = MGS.chickens + ' فراخ';
+  mgMultPill.hidden = !boostActive();   // the ×2 boost comes from the lobby's flying cigarette
 }
 
 function mgLoop(){
@@ -2392,25 +2803,29 @@ function mgLoop(){
   mgLastT = now;
   const W = mgCanvas.width, H = mgCanvas.height;
 
-  MGS.timeLeft -= dt;
-  if(MGS.timeLeft <= 0){ MGS.timeLeft = 0; updateMgHud(); drawMg(now); finishRound(); return; }
+  if(mgMode === 'ninja'){
+    njStep(dt, now, W, H);
+  } else {
+    MGS.timeLeft -= dt;
+    if(MGS.timeLeft <= 0){ MGS.timeLeft = 0; updateMgHud(); drawMg(now); finishRound(); return; }
 
-  MGS.spawnIn -= dt;
-  if(MGS.spawnIn <= 0){
-    spawnBird();
-    const prog = 1 - MGS.timeLeft/ROUND_TIME;
-    MGS.spawnIn = 1.25 - prog*.72 + Math.random()*.25;
-  }
+    MGS.spawnIn -= dt;
+    if(MGS.spawnIn <= 0){
+      spawnBird();
+      const prog = 1 - MGS.timeLeft/ROUND_TIME;
+      MGS.spawnIn = 1.25 - prog*.72 + Math.random()*.25;
+    }
 
-  const gun = gunById(curGun);
-  if(MGS.firing && gun.auto && now - MGS.lastShot >= gun.rate) shootAt(MGS.mx, MGS.my, now);
+    const gun = gunById(curGun);
+    if(MGS.firing && gun.auto && now - MGS.lastShot >= gun.rate) shootAt(MGS.mx, MGS.my, now);
 
-  for(let i = MGS.birds.length-1; i >= 0; i--){
-    const b = MGS.birds[i];
-    b.x += b.vx*dt;
-    b.y = b.baseY + Math.sin(now/1000*b.freq + b.phase)*b.amp;
-    if(b.hitFlash > 0) b.hitFlash -= dt*4;
-    if(b.x < -160 || b.x > W+160) MGS.birds.splice(i,1);
+    for(let i = MGS.birds.length-1; i >= 0; i--){
+      const b = MGS.birds[i];
+      b.x += b.vx*dt;
+      b.y = b.baseY + Math.sin(now/1000*b.freq + b.phase)*b.amp;
+      if(b.hitFlash > 0) b.hitFlash -= dt*4;
+      if(b.x < -160 || b.x > W+160) MGS.birds.splice(i,1);
+    }
   }
   for(let i = MGS.parts.length-1; i >= 0; i--){
     const p = MGS.parts[i];
@@ -2439,15 +2854,16 @@ function spawnBird(){
   else if(r < .16) type = 'chick';
   else if(r < .23) type = 'date';
   else if(r < .30) type = 'pill';
-  else if(r < .44 && MGS.timeLeft < ROUND_TIME - 8) type = 'rooster';
+  else if(r < .46 && MGS.timeLeft < ROUND_TIME - 12) type = 'balloon';
+  else if(r < .60 && MGS.timeLeft < ROUND_TIME - 8) type = 'rooster';
   const def = BIRDS[type];
   MGS.birds.push({
     type, dir,
     size: def.size * (.85 + Math.random()*.35),
     vx: dir * def.speed * (.8 + Math.random()*.55),
     x: dir > 0 ? -110 : W + 110,
-    baseY: 56 + Math.random() * Math.max(80, H - 150),
-    amp: 12 + Math.random()*34,
+    baseY: type === 'balloon' ? (30 + Math.random() * Math.max(50, H*.24)) : (56 + Math.random() * Math.max(80, H - 150)),
+    amp: type === 'balloon' ? (5 + Math.random()*9) : (12 + Math.random()*34),
     freq: 1.2 + Math.random()*1.8,
     phase: Math.random()*6.28,
     hp: def.hp, hitFlash: 0
@@ -2463,6 +2879,14 @@ function mgPoint(e){
 }
 mgCanvas.addEventListener('pointermove', e=>{
   const p = mgPoint(e);
+  if(mgMode === 'ninja'){
+    if(NJS.slicing && mgRunning){
+      const last = NJS.trail[NJS.trail.length - 1];
+      NJS.trail.push({x:p.x, y:p.y, t:performance.now()});
+      if(last) njCheckSlice(last, p);
+    }
+    return;
+  }
   MGS.mx = p.x; MGS.my = p.y;
 });
 mgCanvas.addEventListener('pointerleave', ()=>{ MGS.mx = -100; MGS.my = -100; });
@@ -2470,6 +2894,13 @@ mgCanvas.addEventListener('contextmenu', e=> e.preventDefault());
 mgCanvas.addEventListener('pointerdown', e=>{
   e.preventDefault();
   const p = mgPoint(e);
+  if(mgMode === 'ninja'){
+    NJS.slicing = true;
+    NJS.trail.length = 0;
+    NJS.trail.push({x:p.x, y:p.y, t:performance.now()});
+    if(mgRunning) njCheckSlice({x:p.x, y:p.y}, p);
+    return;
+  }
   MGS.mx = p.x; MGS.my = p.y;
   MGS.firing = true;
   if(!mgRunning) return;
@@ -2477,8 +2908,8 @@ mgCanvas.addEventListener('pointerdown', e=>{
   const gun = gunById(curGun);
   if(now - MGS.lastShot >= gun.rate) shootAt(p.x, p.y, now);
 });
-window.addEventListener('pointerup', ()=>{ MGS.firing = false; });
-window.addEventListener('pointercancel', ()=>{ MGS.firing = false; });
+window.addEventListener('pointerup', ()=>{ MGS.firing = false; NJS.slicing = false; });
+window.addEventListener('pointercancel', ()=>{ MGS.firing = false; NJS.slicing = false; });
 
 function shootAt(x, y, now){
   const gun = gunById(curGun);
@@ -2518,20 +2949,30 @@ function hitBird(b){
     return;
   }
   b.hp--;
+  if(gunById(curGun).killAll) b.hp = 0;  // the sniper one-shots ANY chicken
   b.hitFlash = 1;
   if(b.hp > 0){
     sndCluck();
     addText(b.x, b.y - b.size*.4, 'بعدين!', '#FFFDF6');
     return;
   }
-  const gain = def.coins;
+  let gain = def.coins;
+  if(gain > 0 && boostActive()) gain *= 2;   // cigarette boost: double points
   coins += gain;
+  earned += Math.max(0, gain);
   MGS.coinsRound += gain;
   if(b.type !== 'pill'){ MGS.chickens++; totalChickens++; }
   refreshWallet();
-  popBird(b, b.type === 'gold' ? '#F5C542' : (b.type === 'chick' ? '#F7D154' : '#FFF8EC'), 10);
-  addText(b.x, b.y, '+' + gain, b.type === 'gold' ? '#FFD44D' : '#B8F0D9');
-  if(b.type === 'gold') sndGold(); else sndPop();
+  popBird(b, b.type === 'gold' ? '#F5C542' : (b.type === 'balloon' ? '#FF6B5A' : (b.type === 'chick' ? '#F7D154' : '#FFF8EC')), b.type === 'balloon' ? 16 : 10);
+  addText(b.x, b.y, '+' + gain, b.type === 'gold' ? '#FFD44D' : (b.type === 'balloon' ? '#FF9BB0' : '#B8F0D9'));
+  if(b.type === 'gold'){ sndGold(); playNo2ta(); }
+  else if(b.type === 'balloon'){ sndBalloonPop(); }
+  else sndPop();
+}
+function sndBalloonPop(){
+  blip(520);
+  setTimeout(()=> blip(700), 70);
+  setTimeout(()=> blip(980), 140);
 }
 
 function popBird(b, col, n){
@@ -2591,7 +3032,7 @@ function drawMg(now){
     mctx.beginPath(); mctx.moveTo(gx, gy); mctx.quadraticCurveTo(gx+3, gy-9, gx+7, gy-11); mctx.stroke();
   }
 
-  MGS.birds.forEach(b=> drawBird(b, now));
+  if(mgMode === 'ninja') njDrawItems(now); else MGS.birds.forEach(b=> drawBird(b, now));
 
   MGS.parts.forEach(p=>{
     mctx.save();
@@ -2617,13 +3058,23 @@ function drawMg(now){
   });
   mctx.globalAlpha = 1;
 
-  drawCrosshair();
+  if(mgMode !== 'ninja') drawCrosshair();
 
   if(MGS.flash > 0){
     mctx.fillStyle = 'rgba(51,37,27,' + (.10*MGS.flash).toFixed(3) + ')';
     mctx.fillRect(-20, -20, W+40, H+40);
   }
   mctx.restore();
+}
+
+function rr(ctx, x, y, w, h, r){
+  ctx.beginPath();
+  ctx.moveTo(x + r, y);
+  ctx.arcTo(x + w, y, x + w, y + h, r);
+  ctx.arcTo(x + w, y + h, x, y + h, r);
+  ctx.arcTo(x, y + h, x, y, r);
+  ctx.arcTo(x, y, x + w, y, r);
+  ctx.closePath();
 }
 
 function drawBird(b, now){
@@ -2660,6 +3111,40 @@ function drawBird(b, now){
     mctx.beginPath(); mctx.moveTo(0, -7.5); mctx.lineTo(0, 7.5); mctx.stroke();
     mctx.strokeStyle = 'rgba(255,253,246,.8)'; mctx.lineWidth = 2;
     mctx.beginPath(); mctx.arc(-6.5, 0, 4.5, -2.2, -1.2); mctx.stroke();
+    mctx.restore();
+    return;
+  }
+  if(b.type === 'balloon'){
+    const flap2 = Math.sin(now/95 + b.phase);
+    mctx.strokeStyle = '#33251B';
+    mctx.lineWidth = 2;
+    mctx.beginPath(); mctx.moveTo(0, -14); mctx.quadraticCurveTo(3, -4, 0, 5); mctx.stroke();
+    mctx.fillStyle = b.hitFlash > .5 ? '#FFD9C9' : '#FFF8EC';
+    mctx.lineWidth = 3;
+    mctx.beginPath(); mctx.ellipse(0, 14, 15, 11, 0, 0, 6.28); mctx.fill(); mctx.stroke();
+    mctx.fillStyle = '#F1E4CC';
+    mctx.beginPath(); mctx.ellipse(-6 + flap2*2, 12, 7, 4.5, -.4, 0, 6.28); mctx.fill();
+    mctx.fillStyle = b.hitFlash > .5 ? '#FFD9C9' : '#FFF8EC';
+    mctx.beginPath(); mctx.arc(11, 6, 8, 0, 6.28); mctx.fill(); mctx.stroke();
+    mctx.fillStyle = '#E9A83A';
+    mctx.beginPath(); mctx.moveTo(18, 5); mctx.lineTo(25, 7); mctx.lineTo(18, 9.5); mctx.closePath(); mctx.fill(); mctx.stroke();
+    mctx.fillStyle = '#33251B';
+    mctx.beginPath(); mctx.arc(12.5, 4.5, 1.7, 0, 6.28); mctx.fill();
+    mctx.strokeStyle = '#E9A83A';
+    mctx.lineWidth = 2.5;
+    mctx.beginPath(); mctx.moveTo(-2, 24); mctx.lineTo(-4, 31); mctx.moveTo(4, 24); mctx.lineTo(5, 31); mctx.stroke();
+    mctx.strokeStyle = '#33251B';
+    mctx.lineWidth = 3.2;
+    mctx.fillStyle = b.hitFlash > .5 ? '#FFD1D1' : '#FF6B5A';
+    mctx.beginPath(); mctx.ellipse(0, -34, 20, 24, 0, 0, 6.28); mctx.fill(); mctx.stroke();
+    mctx.fillStyle = '#B3402E';
+    mctx.beginPath(); mctx.moveTo(0, -11); mctx.lineTo(-5, -16); mctx.lineTo(5, -16); mctx.closePath(); mctx.fill(); mctx.stroke();
+    mctx.fillStyle = 'rgba(255,255,255,.5)';
+    mctx.beginPath(); mctx.ellipse(-7, -42, 5, 8, .5, 0, 6.28); mctx.fill();
+    mctx.fillStyle = '#C03225';
+    for(let i = 0; i < b.hp; i++){
+      mctx.beginPath(); mctx.arc(-12 + i*11, 34, 3.6, 0, 6.28); mctx.fill();
+    }
     mctx.restore();
     return;
   }
@@ -2837,6 +3322,432 @@ function sndBad(){
 }
 
 /* ================================================================
+   NINJA — سكّين الطيبات: slice the tayyibat, let the khaba'ith pass.
+   A fruit-ninja tribute to Dr. Diaa's Al-Tayyibat diet.
+================================================================ */
+const NJS = {items:[], slicing:false, trail:[], pts:0, sliced:0, badCuts:0, timeLeft:0, spawnIn:0, combo:0, comboT:0};
+const NJ_TIME = 45;
+const NJ_G = 1500;
+const NJ_FOODS = [
+  // الطيبات — good foods of the Tayebat system
+  {id:'date',   nm:'تمر',       pts:8, good:true,  col:'#8B5A2B'},
+  {id:'rice',   em:'🍚', nm:'أرز',        pts:7, good:true,  col:'#F7F3EA'},
+  {id:'potato', em:'🥔', nm:'بطاطس',      pts:6, good:true,  col:'#E9C893'},
+  {id:'banana', em:'🍌', nm:'موز',        pts:6, good:true,  col:'#F5DE8A'},
+  {id:'nutella',em:'🍫', nm:'نوتيلا',     pts:10, good:true, col:'#6E4224'},
+  {id:'honey',  em:'🍯', nm:'عسَل',       pts:8, good:true,  col:'#E9A83A'},
+  {id:'qeshta', em:'🍮', nm:'قشطة',       pts:7, good:true,  col:'#F2E4C4'},
+  {id:'meat',   em:'🥩', nm:'لحمة',       pts:9, good:true,  col:'#B3451F'},
+  {id:'fish',   em:'🐟', nm:'سمك بحري',   pts:9, good:true,  col:'#7FA8D0'},
+  {id:'corn',   em:'🌽', nm:'ذرة',        pts:6, good:true,  col:'#F5DE8A'},
+  {id:'toast',  em:'🍞', nm:'عيش توست',   pts:5, good:true,  col:'#D9C29A'},
+  {id:'olive',  em:'🫒', nm:'زيت زيتون',  pts:7, good:true,  col:'#8FAF55'},
+  {id:'nuts',   em:'🌰', nm:'مكسرات',     pts:7, good:true,  col:'#A9713F'},
+  {id:'ghee',   em:'🧈', nm:'سمنة',       pts:6, good:true,  col:'#F2D880'},
+  // الخبائث — forbidden foods («الفراخ قذرة ومتتاكليش»)
+  {id:'chicken',em:'🍗', nm:'فراخ',       pts:-20, good:false, col:'#D8402C'},
+  {id:'cola',   em:'🥤', nm:'كولا',       pts:-12, good:false, col:'#C03225'},
+  {id:'fino',   em:'🥐', nm:'فينو',       pts:-8,  good:false, col:'#E9C893'},
+  {id:'sausage',em:'🌭', nm:'سوسيس',      pts:-12, good:false, col:'#B3451F'},
+  {id:'pasta',  em:'🍝', nm:'مكرونة',     pts:-10, good:false, col:'#F2D880'},
+  {id:'chips',  em:'🍟', nm:'شيبسي',      pts:-10, good:false, col:'#F2C14E'},
+  {id:'milk',   em:'🥛', nm:'لبن',        pts:-10, good:false, col:'#F7F3EA'},
+  {id:'egg',    em:'🥚', nm:'بيض',        pts:-10, good:false, col:'#F7F3EA'},
+  {id:'salad',  em:'🥗', nm:'سلطة',       pts:-8,  good:false, col:'#8FAF55'},
+  {id:'foul',   em:'🫘', nm:'فول',        pts:-10, good:false, col:'#8B5A2B'}
+];
+const NJ_SEVEN = {id:'seven', nm:'سبع تمرات', pts:25, good:true, col:'#8B5A2B'};
+const NJ_GOOD = NJ_FOODS.filter(f => f.good), NJ_BAD = NJ_FOODS.filter(f => !f.good);
+
+function njPick(){
+  const r = Math.random();
+  if(r < .04) return NJ_SEVEN;
+  if(r < .34) return NJ_BAD[(Math.random()*NJ_BAD.length)|0];
+  return NJ_GOOD[(Math.random()*NJ_GOOD.length)|0];
+}
+function startNinja(){
+  NJS.items.length = 0; MGS.parts.length = 0; MGS.texts.length = 0; NJS.trail.length = 0;
+  NJS.pts = 0; NJS.sliced = 0; NJS.badCuts = 0; NJS.combo = 0; NJS.comboT = 0;
+  NJS.timeLeft = NJ_TIME; NJS.spawnIn = .4; NJS.slicing = false;
+  MGS.shake = 0; MGS.flash = 0;
+  mgRunning = true;
+  mgLastT = 0;
+  mgAllScreens(true);
+  hudCache = '';
+  updateMgHud();
+  if(mgRAF) cancelAnimationFrame(mgRAF);
+  mgRAF = requestAnimationFrame(mgLoop);
+}
+function njSpawn(W, H){
+  const f = njPick();
+  // peak y inside the upper 25%..70% of the canvas; the impulse must cover the
+  // distance from the spawn point (46px below the bottom edge) up to that peak
+  const peakY = H * (.25 + Math.random()*.45);
+  const rise = (H + 46) - peakY;
+  const x0 = W*.12 + Math.random()*W*.76;
+  NJS.items.push({
+    f,
+    x: x0,
+    y: H + 46,
+    vx: (x0 < W/2 ? 1 : -1) * (30 + Math.random()*110),
+    vy: -Math.sqrt(2 * NJ_G * rise),
+    rot: (Math.random()-.5)*.9,
+    vr: (Math.random()-.5)*2.4,
+    size: f.id === 'seven' ? 52 : 30 + Math.random()*12
+  });
+}
+function njStep(dt, now, W, H){
+  NJS.timeLeft -= dt;
+  if(NJS.timeLeft <= 0){ NJS.timeLeft = 0; updateMgHud(); drawMg(now); finishNinja(); return; }
+  NJS.spawnIn -= dt;
+  if(NJS.spawnIn <= 0){
+    njSpawn(W, H);
+    const prog = 1 - NJS.timeLeft/NJ_TIME;
+    NJS.spawnIn = .62 - prog*.30 + Math.random()*.22;
+  }
+  if(NJS.comboT > 0){ NJS.comboT -= dt; if(NJS.comboT <= 0) NJS.combo = 0; }
+  const cut = performance.now() - 160;
+  while(NJS.trail.length && NJS.trail[0].t < cut) NJS.trail.shift();
+  for(let i = NJS.items.length-1; i >= 0; i--){
+    const it = NJS.items[i];
+    it.vy += NJ_G*dt;
+    it.x += it.vx*dt;
+    it.y += it.vy*dt;
+    it.rot += it.vr*dt;
+    if(it.y > H + 90 && it.vy > 0) NJS.items.splice(i,1);
+  }
+}
+function segDist(px, py, ax, ay, bx, by){
+  const dx = bx-ax, dy = by-ay, l2 = dx*dx + dy*dy;
+  let t = l2 ? ((px-ax)*dx + (py-ay)*dy)/l2 : 0;
+  t = Math.max(0, Math.min(1, t));
+  return Math.hypot(px - (ax + t*dx), py - (ay + t*dy));
+}
+function njCheckSlice(a, b){
+  for(let i = NJS.items.length-1; i >= 0; i--){
+    const it = NJS.items[i];
+    if(segDist(it.x, it.y, a.x, a.y, b.x, b.y) < it.size*.62) njSlice(it);
+  }
+}
+function njSlice(it){
+  const i = NJS.items.indexOf(it);
+  if(i < 0) return;
+  NJS.items.splice(i, 1);
+  const f = it.f, x = it.x, y = it.y;
+  if(f.good){
+    let g = f.pts;
+    NJS.combo++;
+    NJS.comboT = .9;
+    if(NJS.combo >= 3){
+      g += Math.min(6, NJS.combo);
+      addText(x, y - 22, 'كومبو ×' + NJS.combo, '#FFD44D');
+    }
+    if(boostActive()) g *= 2;   // cigarette boost: double points
+    coins += g;
+    earned += g;
+    NJS.pts += g;
+    NJS.sliced++;
+    addText(x, y, '+' + g, f.id === 'seven' ? '#FFD44D' : '#B8F0D9');
+    if(f.id === 'seven') addText(x, y + 26, 'سبع تمرات قبل الفطار!', '#FFF8EC');
+    sndSlice();
+  } else {
+    coins = Math.max(0, coins + f.pts);
+    NJS.pts += f.pts;
+    NJS.badCuts++;
+    MGS.shake = 1;
+    addText(x, y, f.pts + ' خبيثة!', '#FF6B5A');
+    addText(x, y + 26, f.nm + '؟! سيبها تعدي', '#F1E4CC');
+    sndBad();
+  }
+  njJuice(x, y, f.col, f.good);
+  refreshWallet();
+  updateMgHud();
+}
+function njJuice(x, y, col, good){
+  for(let i = 0; i < 10; i++){
+    MGS.parts.push({
+      x, y,
+      vx: (Math.random()-.5)*320, vy: -60 - Math.random()*220,
+      rot: Math.random()*6.28, vr: (Math.random()-.5)*10,
+      w: 4 + Math.random()*6, col: good ? col : '#D8402C',
+      life: .7 + Math.random()*.5, t: 0
+    });
+  }
+}
+function sndSlice(){
+  blip(880);
+  setTimeout(()=> blip(1180), 45);
+}
+function njDrawItems(now){
+  NJS.items.forEach(it=>{
+    const f = it.f;
+    mctx.save();
+    mctx.translate(it.x, it.y);
+    mctx.rotate(it.rot);
+    const s = it.size/40;
+    mctx.scale(s, s);
+    mctx.lineWidth = 2.6;
+    if(f.good){ mctx.strokeStyle = 'rgba(46,125,116,.6)'; }
+    else { mctx.strokeStyle = 'rgba(192,50,37,.7)'; mctx.setLineDash([7, 6]); }
+    mctx.beginPath(); mctx.arc(0, 0, 26, 0, 6.28); mctx.stroke();
+    mctx.setLineDash([]);
+    if(f.id === 'date' || f.id === 'seven'){
+      const n = f.id === 'seven' ? 7 : 3;
+      mctx.strokeStyle = '#33251B';
+      mctx.lineWidth = 2.2;
+      for(let k = 0; k < n; k++){
+        const a = k*2.399;
+        const cx = Math.cos(a)*9, cy = Math.sin(a)*8;
+        mctx.fillStyle = '#8B5A2B';
+        mctx.beginPath(); mctx.ellipse(cx, cy, 6.5, 9, a, 0, 6.28); mctx.fill(); mctx.stroke();
+        mctx.fillStyle = 'rgba(255,253,246,.35)';
+        mctx.beginPath(); mctx.ellipse(cx-2, cy-3, 2, 3, a, 0, 6.28); mctx.fill();
+      }
+      if(f.id === 'seven'){
+        mctx.strokeStyle = '#E9A83A';
+        mctx.lineWidth = 2.5;
+        mctx.setLineDash([5, 5]);
+        mctx.beginPath(); mctx.arc(0, 0, 27, 0, 6.28); mctx.stroke();
+        mctx.setLineDash([]);
+      }
+    } else {
+      mctx.font = '38px "Segoe UI Emoji","Apple Color Emoji","Noto Color Emoji",sans-serif';
+      mctx.textAlign = 'center';
+      mctx.textBaseline = 'middle';
+      mctx.fillText(f.em, 0, -2);
+    }
+    mctx.restore();
+    mctx.save();
+    mctx.globalAlpha = .93;
+    mctx.font = '800 12px "Baloo Bhaijaan 2",sans-serif';
+    mctx.textAlign = 'center';
+    mctx.textBaseline = 'top';
+    mctx.lineWidth = 3.5;
+    mctx.strokeStyle = 'rgba(51,37,27,.8)';
+    mctx.strokeText(f.nm, it.x, it.y + it.size*.66);
+    mctx.fillStyle = f.good ? '#0F5F55' : '#8E2B1F';
+    mctx.fillText(f.nm, it.x, it.y + it.size*.66);
+    mctx.restore();
+  });
+  const tnow = performance.now();
+  mctx.lineCap = 'round';
+  for(let i = 1; i < NJS.trail.length; i++){
+    const a = NJS.trail[i-1], b = NJS.trail[i];
+    const age = (tnow - b.t)/150;
+    if(age > 1) continue;
+    mctx.strokeStyle = 'rgba(250,241,224,' + ((1-age)*.92).toFixed(2) + ')';
+    mctx.lineWidth = (1-age)*14 + 2;
+    mctx.beginPath(); mctx.moveTo(a.x, a.y); mctx.lineTo(b.x, b.y); mctx.stroke();
+  }
+}
+function finishNinja(){
+  stopRound();
+  if(NJS.pts > ninjaBest) ninjaBest = NJS.pts;
+  ninjaTotal += NJS.sliced;
+  saveGame();
+  njEndStats.innerHTML =
+    'قطّعت <b>' + NJS.sliced + '</b> طيبة·طيبات الجولة: <b>' + NJS.pts + '</b>' +
+    (NJS.badCuts ? '<br>وبصصت في <b>' + NJS.badCuts + '</b> خبيثة — الدكتور مش مبسوط' : '<br>ما لمست ولا خبيثة — الدكتور فخور بيك!') +
+    '<br>أحسن جولة تقطيع: <b>' + ninjaBest + '</b>';
+  document.getElementById('njBest').textContent = ninjaBest;
+  document.getElementById('njTotal').textContent = ninjaTotal;
+  njEnd.hidden = false;
+  sparkle();
+  maybeAutoSubmit();
+}
+
+/* ================================================================
+   LEADERBOARD — لوحة الأبطال: global scores on textdb.dev
+   (free key/value host, open CORS — works straight off GitHub Pages).
+   Score = lifetime tayyibat earned × (1 + game completion %).
+================================================================ */
+const LB_URL = "https://textdb.dev/api/data/diaa-el-awady-game-leaderboard-v1";
+const lbList = document.getElementById('lbList');
+const lbNameForm = document.getElementById('lbNameForm');
+const lbNameInput = document.getElementById('lbNameInput');
+const lbYourStats = document.getElementById('lbYourStats');
+let lbBusy = false;
+function completionPct(){
+  let total = 0, have = 0;
+  Object.keys(DATA).forEach(c => DATA[c].forEach(it=>{
+    if(it.price){ total++; if(unlocked.has(it.id)) have++; }
+  }));
+  STAGES.forEach(s=>{ if(s.price){ total++; if(stagesOwned.has(s.id)) have++; } });
+  GUNS.forEach(g=>{ if(g.price){ total++; if(gunsOwned.has(g.id)) have++; } });
+  return total ? have/total : 0;
+}
+function myScore(){ return Math.round(earned * (1 + completionPct())); }
+function maybeAutoSubmit(){
+  const s = myScore();
+  if(s > 0 && s > lbBest && lbName){ lbBest = s; saveGame(); lbSubmit(lbName, s); }
+}
+function lbSanitize(v){
+  return (v || '').replace(/[<>&"']/g, '').replace(/\s+/g, ' ').trim().slice(0, 18);
+}
+async function fetchLb(){
+  try{
+    const res = await fetch(LB_URL, {cache: 'no-store'});
+    if(!res.ok) return null;
+    const txt = (await res.text()).trim();
+    if(!txt) return [];
+    const d = JSON.parse(txt);
+    return Array.isArray(d) ? d : (d && Array.isArray(d.rows) ? d.rows : []);
+  }catch(e){ return null; }
+}
+async function lbSubmit(name, score){
+  if(lbBusy) return;
+  lbBusy = true;
+  try{
+    const rows = (await fetchLb()) || [];
+    const me = {n: name, s: score, c: Math.round(completionPct()*100), t: Date.now()};
+    const i = rows.findIndex(r => (r.n || '') === name);
+    if(i >= 0){
+      if((rows[i].s || 0) >= score){ renderLb(rows); return; }
+      rows[i] = me;
+    } else rows.push(me);
+    rows.sort((a,b)=> (b.s||0) - (a.s||0));
+    if(rows.length > 100) rows.length = 100;
+    await fetch(LB_URL, {method: 'POST', headers: {'Content-Type': 'text/plain'}, body: JSON.stringify(rows)});
+    if(score > lbBest){ lbBest = score; saveGame(); }
+    renderLb(rows);
+    toast('انحطيت في لوحة الأبطال يا ' + name + '!');
+  }catch(e){
+    toast('مقدرنا نوصل للوحة الأبطال — اتأكد من النت وجرجع');
+  }finally{
+    lbBusy = false;
+  }
+}
+function renderLb(rows){
+  lbList.innerHTML = '';
+  if(!rows.length){
+    lbList.innerHTML = '<div class="lb-row"><span>لسه ما حد سجّل — كون إنت الأول!</span></div>';
+    return;
+  }
+  rows.slice(0, 50).forEach((r, i)=>{
+    const div = document.createElement('div');
+    div.className = 'lb-row' + ((r.n || '') === lbName ? ' me' : '');
+    const rank = i === 0 ? '🥇' : i === 1 ? '🥈' : i === 2 ? '🥉' : (i+1);
+    const name = document.createElement('span');
+    name.className = 'lb-name';
+    name.textContent = (r.n || '') + (r.c !== undefined ? ' · إكمال ' + r.c + '%' : '');
+    div.innerHTML = '<span class="lb-rank">' + rank + '</span>';
+    div.appendChild(name);
+    const sc = document.createElement('span');
+    sc.className = 'lb-score';
+    sc.textContent = (r.s || 0).toLocaleString('ar-EG');
+    div.appendChild(sc);
+    lbList.appendChild(div);
+  });
+}
+async function openLb(){
+  mgAllScreens(true);
+  lbScreen.hidden = false;
+  lbYourStats.textContent = 'نقطك: ' + myScore().toLocaleString('ar-EG') +
+    ' = ' + earned.toLocaleString('ar-EG') + ' طيبات مكتسبة × إكمال ' + Math.round(completionPct()*100) + '%';
+  lbNameForm.style.display = lbName ? 'none' : 'flex';
+  lbList.textContent = '…';
+  const rows = await fetchLb();
+  if(rows === null){
+    lbList.innerHTML = '<div class="lb-row"><span>اللوحة مش متاحة الآن — اتأكد من النت وجرجع</span></div>';
+    return;
+  }
+  renderLb(rows);
+}
+document.getElementById('lbRefresh').addEventListener('click', ()=>{ blip(600); openLb(); });
+document.getElementById('lbBack').addEventListener('click', ()=>{ blip(560); setMgMode(lastGameMode, true); });
+document.getElementById('lbSaveName').addEventListener('click', ()=>{
+  const nm = lbSanitize(lbNameInput.value);
+  if(!nm){ toast('اكتب اسم الأول يا بطل'); return; }
+  lbName = nm;
+  saveGame();
+  lbNameForm.style.display = 'none';
+  lbSubmit(nm, myScore());
+});
+
+/* ================================================================
+   THE FLYING CIGARETTE — a VERY rare guest over the dress-up stage.
+   Tap it: every tayyibat point you earn is ×2 for two minutes, and
+   the mouth cigarette (the secret item) unlocks on Diaa's face.
+   It only ever appears in the lobby/stage — never inside the games.
+================================================================ */
+const lobbyCigEl = document.getElementById('lobbyCig');
+let cigFlying = false;
+function spawnLobbyCig(){
+  if(cigFlying) return;
+  cigFlying = true;
+  const wrap = document.querySelector('.stage-wrap');
+  const wrapW = wrap.clientWidth || 430;
+  const dir = Math.random() < .5 ? 1 : -1;
+  lobbyCigEl.hidden = false;
+  lobbyCigEl.style.top = (12 + Math.random()*44) + '%';
+  lobbyCigEl.style.transform = dir < 0 ? 'scaleX(-1)' : '';
+  const from = dir > 0 ? -100 : wrapW + 24;
+  const to   = dir > 0 ? wrapW + 24 : -100;
+  const anim = lobbyCigEl.animate(
+    [{left: from + 'px'}, {left: to + 'px'}],
+    {duration: 8500 + Math.random()*4500, easing: 'linear'}
+  );
+  lobbyCigEl._anim = anim;
+  anim.onfinish = ()=>{ cigFlying = false; lobbyCigEl.hidden = true; };
+}
+function catchLobbyCig(){
+  if(!cigFlying) return;
+  cigFlying = false;
+  try{ lobbyCigEl._anim && lobbyCigEl._anim.cancel(); }catch(e){}
+  lobbyCigEl.hidden = true;
+  sndGold();
+  sparkle();
+  boostUntil = Date.now() + 120000;   // two whole minutes of double points
+  updateBoostBadge();
+  if(!unlocked.has('cigarette')){
+    unlocked.add('cigarette');
+    applyItem('acc', 'cigarette');
+    toast('سيجارة ضياة! نقاط ×2 لدقيقتين والسيجارة في بقّه — بتطير بعد ما يخلص الوقت!');
+    renderGrid();
+  }else{
+    toast('سيجارة ضياة! كل النقط ×2 لدقيقتين — وبعدين بتطير تاني');
+  }
+  saveGame();
+}
+lobbyCigEl.addEventListener('pointerdown', e=>{ e.preventDefault(); blip(880); catchLobbyCig(); });
+lobbyCigEl.addEventListener('click', ()=> catchLobbyCig());
+// the rare guest: a roll every 10s, lobby only — roughly once in a blue moon
+setInterval(()=>{
+  if(cigFlying || document.hidden || !mg.hidden || !shopModal.hidden) return;
+  if(Math.random() < .045) spawnLobbyCig();
+}, 10000);
+window.__forceCig = spawnLobbyCig;   // tiny hooks so the game can be tested end-to-end
+window.__setBoost = ms => { boostUntil = Date.now() + ms; updateBoostBadge(); };
+window.__party = startParty;
+
+/* ================================================================
+   FIRST-TIME NAME — who's playing? asked on load; if skipped it
+   asks again next visit until a name is finally saved.
+================================================================ */
+const nameModal = document.getElementById('nameModal');
+const ftNameInput = document.getElementById('ftNameInput');
+function askName(){
+  if(lbName || !nameModal.hidden) return;
+  nameModal.hidden = false;
+  setTimeout(()=>{ try{ ftNameInput.focus(); }catch(e){} }, 300);
+}
+document.getElementById('ftNameGo').addEventListener('click', ()=>{
+  const nm = lbSanitize(ftNameInput.value);
+  if(!nm){ toast('اكتب اسم الأول يا بطل'); return; }
+  lbName = nm;
+  saveGame();
+  nameModal.hidden = true;
+  sparkle();
+  toast('أهلاً يا ' + nm + '! نقاطك هتروح على طول في لوحة الأبطال');
+  maybeAutoSubmit();
+});
+document.getElementById('ftNameLater').addEventListener('click', ()=>{ nameModal.hidden = true; });
+ftNameInput.addEventListener('keydown', e=>{
+  if(e.key === 'Enter'){ e.preventDefault(); document.getElementById('ftNameGo').click(); }
+});
+setTimeout(askName, 900);
+
+/* ================================================================
    init — restore saved progress, then render
 ================================================================ */
 (function restoreSave(){
@@ -2846,8 +3757,12 @@ function sndBad(){
   if(ok('bottom', o.bottom)) setCat('bottom', o.bottom);
   if(ok('shoes', o.shoes)) setCat('shoes', o.shoes);
   (o.acc || []).forEach(id=>{
+    // the cigarette is a two-minute guest: it only comes back on reload
+    // if its boost is still ticking
+    if(id === 'cigarette' && !boostActive()) return;
     if(DATA.acc.some(a => a.id === id && isOwned(a))) applyItem('acc', id);
   });
+  if(!boostActive()) unlocked.delete('cigarette');   // back to being a secret
   if(!soundOn) updateSoundLabel();
 })();
 renderTabs();
